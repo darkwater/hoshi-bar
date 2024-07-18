@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fdls/components/clock.dart';
 import 'package:fdls/providers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -28,19 +29,29 @@ class App extends ConsumerWidget {
           brightness: Brightness.dark,
         ),
       ),
-      home: SizedBox(
+      home: const SizedBox(
         height: 50,
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Center(
-            child: Material(
-              color: const Color.fromRGBO(0x21, 0x27, 0x33, 0.5),
-              borderRadius: BorderRadius.circular(8),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 64, vertical: 8),
-                child: Text('Test'),
-              ),
-            ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ClockComponent(),
+              ClockComponent(),
+              ClockComponent(),
+              ClockComponent(),
+              ClockComponent(),
+              const Spacer(),
+              ClockComponent(),
+              ClockComponent(),
+              ClockComponent(),
+              const Spacer(),
+              ClockComponent(),
+              ClockComponent(),
+              ClockComponent(),
+              ClockComponent(),
+              ClockComponent(),
+            ],
           ),
         ),
       ),
