@@ -14,7 +14,7 @@ part 'network.freezed.dart';
 
 const _historyLength = 100;
 const _maxY = 500 * 1024 * 1024 / 8; // 500 Mbps
-const _interval = Duration(seconds: 1);
+const _interval = Duration(seconds: 10);
 
 @riverpod
 Stream<List<NetworkUsage>> networkUsageStream(
@@ -27,21 +27,20 @@ Stream<List<NetworkUsage>> networkUsageStream(
   final history = <NetworkUsage>[];
 
   while (true) {
+    final nowRx = devices.fold<int>(0, (prev, dev) => prev + dev.rxBytes);
+    final nowTx = devices.fold<int>(0, (prev, dev) => prev + dev.txBytes);
+
     final last = history.isNotEmpty ? history.last : null;
-    final lastRx = last?.downBytes ?? 0;
-    final lastTx = last?.upBytes ?? 0;
+    final lastRx = last?.downBytes ?? nowRx;
+    final lastTx = last?.upBytes ?? nowTx;
 
     history.add(
       NetworkUsage(
         id: "all",
-        upBytes: devices.fold<int>(0, (prev, dev) => prev + dev.txBytes),
-        downBytes: devices.fold<int>(0, (prev, dev) => prev + dev.rxBytes),
-        upRate:
-            (devices.fold<int>(0, (prev, dev) => prev + dev.txBytes) - lastTx) /
-                _interval.inSeconds,
-        downRate:
-            (devices.fold<int>(0, (prev, dev) => prev + dev.rxBytes) - lastRx) /
-                _interval.inSeconds,
+        upBytes: nowTx,
+        downBytes: nowRx,
+        upRate: (nowTx - lastTx) / _interval.inSeconds,
+        downRate: (nowRx - lastRx) / _interval.inSeconds,
       ),
     );
 
@@ -76,8 +75,10 @@ String _humanSize(double size) {
     return "<1 K";
   } else if (size < 1024 * 1024) {
     return "${(size / 1024).toStringAsFixed(0)} K";
-  } else {
+  } else if (size < 1024 * 1024 * 1024) {
     return "${(size / 1024 / 1024).toStringAsFixed(0)} M";
+  } else {
+    return "${(size / 1024 / 1024 / 1024).toStringAsFixed(0)} G";
   }
 }
 

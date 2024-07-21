@@ -21,9 +21,12 @@ class Component<T> extends StatelessWidget {
           error: (e, st) => Tooltip(
             message: e.toString(),
             verticalOffset: -16,
-            child: const Icon(
-              Icons.warning_amber,
-              color: Colors.red,
+            child: Container(
+              color: Colors.red.withOpacity(0.2),
+              child: const Icon(
+                Icons.warning_amber,
+                color: Colors.red,
+              ),
             ),
           ),
           loading: () => SizedBox(

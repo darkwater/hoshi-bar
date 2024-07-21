@@ -12,15 +12,14 @@ part 'temperature.freezed.dart';
 
 @riverpod
 Stream<List<Temperature>> temperatureStream(TemperatureStreamRef ref) async* {
-  final batteries =
-      (await SysfsHwmon.list()).where((e) => e.temp1Input != null);
+  final batteries = (await SysfsHwmon.list()).where((e) => e.maxTemp != null);
 
   while (true) {
     yield batteries
         .map((e) => Temperature(
               id: e.id,
               name: e.name,
-              temperature: e.temp1Input ?? 0,
+              temperature: e.maxTemp!,
             ))
         .toList();
 

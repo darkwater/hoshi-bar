@@ -22,11 +22,6 @@ class App extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: ref.watch(themeColorProvider),
-        ),
-      ),
-      darkTheme: ThemeData(
         brightness: Brightness.dark,
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: ref.watch(themeColorProvider),
