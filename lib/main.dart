@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fdls/components/battery.dart';
 import 'package:fdls/components/clock.dart';
+import 'package:fdls/components/temperature.dart';
 import 'package:fdls/providers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -45,6 +46,7 @@ class App extends ConsumerWidget {
             ClockComponent(),
             ClockComponent(),
             Spacer(),
+            TemperatureComponent(),
             BatteryComponent(),
             ClockComponent(),
           ],

@@ -16,8 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Battery {
-  String get name => throw _privateConstructorUsedError;
-  int get capacity => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
+  double get capacity => throw _privateConstructorUsedError;
   SysfsPowerSupplyStatus get status => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -29,7 +29,7 @@ abstract class $BatteryCopyWith<$Res> {
   factory $BatteryCopyWith(Battery value, $Res Function(Battery) then) =
       _$BatteryCopyWithImpl<$Res, Battery>;
   @useResult
-  $Res call({String name, int capacity, SysfsPowerSupplyStatus status});
+  $Res call({String id, double capacity, SysfsPowerSupplyStatus status});
 }
 
 /// @nodoc
@@ -45,20 +45,20 @@ class _$BatteryCopyWithImpl<$Res, $Val extends Battery>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
+    Object? id = null,
     Object? capacity = null,
-    Object? status = null,
+    Object? status = freezed,
   }) {
     return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       capacity: null == capacity
           ? _value.capacity
           : capacity // ignore: cast_nullable_to_non_nullable
-              as int,
-      status: null == status
+              as double,
+      status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as SysfsPowerSupplyStatus,
@@ -73,7 +73,7 @@ abstract class _$$BatteryImplCopyWith<$Res> implements $BatteryCopyWith<$Res> {
       __$$BatteryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, int capacity, SysfsPowerSupplyStatus status});
+  $Res call({String id, double capacity, SysfsPowerSupplyStatus status});
 }
 
 /// @nodoc
@@ -87,20 +87,20 @@ class __$$BatteryImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
+    Object? id = null,
     Object? capacity = null,
-    Object? status = null,
+    Object? status = freezed,
   }) {
     return _then(_$BatteryImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       capacity: null == capacity
           ? _value.capacity
           : capacity // ignore: cast_nullable_to_non_nullable
-              as int,
-      status: null == status
+              as double,
+      status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as SysfsPowerSupplyStatus,
@@ -112,18 +112,18 @@ class __$$BatteryImplCopyWithImpl<$Res>
 
 class _$BatteryImpl implements _Battery {
   const _$BatteryImpl(
-      {required this.name, required this.capacity, required this.status});
+      {required this.id, required this.capacity, required this.status});
 
   @override
-  final String name;
+  final String id;
   @override
-  final int capacity;
+  final double capacity;
   @override
   final SysfsPowerSupplyStatus status;
 
   @override
   String toString() {
-    return 'Battery(name: $name, capacity: $capacity, status: $status)';
+    return 'Battery(id: $id, capacity: $capacity, status: $status)';
   }
 
   @override
@@ -131,14 +131,15 @@ class _$BatteryImpl implements _Battery {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BatteryImpl &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.capacity, capacity) ||
                 other.capacity == capacity) &&
-            (identical(other.status, status) || other.status == status));
+            const DeepCollectionEquality().equals(other.status, status));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, name, capacity, status);
+  int get hashCode => Object.hash(
+      runtimeType, id, capacity, const DeepCollectionEquality().hash(status));
 
   @JsonKey(ignore: true)
   @override
@@ -149,14 +150,14 @@ class _$BatteryImpl implements _Battery {
 
 abstract class _Battery implements Battery {
   const factory _Battery(
-      {required final String name,
-      required final int capacity,
+      {required final String id,
+      required final double capacity,
       required final SysfsPowerSupplyStatus status}) = _$BatteryImpl;
 
   @override
-  String get name;
+  String get id;
   @override
-  int get capacity;
+  double get capacity;
   @override
   SysfsPowerSupplyStatus get status;
   @override

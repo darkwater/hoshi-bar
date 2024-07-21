@@ -1,4 +1,4 @@
-import 'package:fdls/sysfs/sysfs.dart';
+import 'package:fdls/sysfs/power_supply.dart';
 import 'package:fdls/widgets/component.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,26 +10,27 @@ part 'battery.freezed.dart';
 
 @riverpod
 Stream<List<Battery>> batteryStream(BatteryStreamRef ref) async* {
-  final batteries = (await SysfsPowerSupply.list()).where((e) =>
-      e.type == SysfsPowerSupplyType.battery && !e.name.startsWith("hid"));
+  final batteries = (await SysfsPowerSupply.list()).where(
+      (e) => e.type == SysfsPowerSupplyType.battery && !e.id.startsWith("hid"));
 
   while (true) {
     yield batteries
         .map((e) => Battery(
-              name: e.name,
+              id: e.id,
               capacity: e.capacity,
               status: e.status,
             ))
         .toList();
-    await Future.delayed(const Duration(seconds: 1));
+
+    await Future.delayed(const Duration(seconds: 10));
   }
 }
 
 @freezed
 class Battery with _$Battery {
   const factory Battery({
-    required String name,
-    required int capacity,
+    required String id,
+    required double capacity,
     required SysfsPowerSupplyStatus status,
   }) = _Battery;
 }
@@ -44,18 +45,21 @@ class BatteryComponent extends ConsumerWidget {
     return Row(
       children: [
         ...(batteries.valueOrNull ?? []).map((battery) {
-          // final color = battery.capacity > 0.2
-          //     ? Colors.green
-          //     : battery.capacity > 0.1
-          //         ? Colors.orange
-          //         : Colors.red;
           final color = switch (battery.status) {
             SysfsPowerSupplyStatus.charging ||
             SysfsPowerSupplyStatus.full =>
               Colors.blue,
-            _ when battery.capacity > 0.2 => Colors.green,
-            _ when battery.capacity > 0.1 => Colors.orange,
+            _ when battery.capacity > 0.30 => Colors.green,
+            _ when battery.capacity > 0.15 => Colors.amber,
             _ => Colors.red,
+          };
+
+          final icon = switch (battery.status) {
+            SysfsPowerSupplyStatus.charging => Icons.battery_charging_full,
+            SysfsPowerSupplyStatus.discharging => Icons.battery_full,
+            SysfsPowerSupplyStatus.notCharging => Icons.battery_unknown,
+            SysfsPowerSupplyStatus.full => Icons.battery_full,
+            _ => Icons.battery_unknown,
           };
 
           return Component(
@@ -66,13 +70,17 @@ class BatteryComponent extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.battery_std, size: 16, color: color),
-                    Text("${battery.capacity}%"),
+                    Icon(icon, size: 16, color: color),
+                    Text("${(battery.capacity * 100).round()}%"),
                   ],
                 ),
-                LinearProgressIndicator(
-                  value: battery.capacity / 100,
-                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  clipBehavior: Clip.antiAlias,
+                  child: LinearProgressIndicator(
+                    value: battery.capacity,
+                    valueColor: AlwaysStoppedAnimation<Color>(color),
+                  ),
                 ),
               ],
             ),

@@ -1,13 +1,13 @@
 import 'dart:io';
 
-sealed class SysfsClass {
+abstract class SysfsClass {
   final String klass;
-  final String name;
+  final String id;
 
-  SysfsClass(this.name, this.klass);
+  SysfsClass(this.id, this.klass);
 
   String getString(String property) {
-    return File("/sys/class/$klass/$name/$property").readAsStringSync().trim();
+    return File("/sys/class/$klass/$id/$property").readAsStringSync().trim();
   }
 
   int getInt(String property) {
@@ -21,62 +21,19 @@ sealed class SysfsClass {
   bool getBool(String property) {
     return getString(property) == "1";
   }
-}
 
-class SysfsPowerSupply extends SysfsClass {
-  static const _klass = "power_supply";
-  SysfsPowerSupply._(super.name, super.klass);
-
-  static Future<List<SysfsPowerSupply>> list() async =>
-      (await _listNames(_klass))
-          .map((e) => SysfsPowerSupply._(e, _klass))
-          .toList();
-
-  SysfsPowerSupplyType get type => switch (getString("type")) {
-        "Battery" => SysfsPowerSupplyType.battery,
-        "UPS" => SysfsPowerSupplyType.ups,
-        "Mains" => SysfsPowerSupplyType.mains,
-        "USB" => SysfsPowerSupplyType.usb,
-        "Wireless" => SysfsPowerSupplyType.wireless,
-        final other => throw "Unknown power supply type: $other",
-      };
-
-  SysfsPowerSupplyStatus get status => switch (getString("status")) {
-        "Charging" => SysfsPowerSupplyStatus.charging,
-        "Discharging" => SysfsPowerSupplyStatus.discharging,
-        "Not charging" => SysfsPowerSupplyStatus.notCharging,
-        "Full" => SysfsPowerSupplyStatus.full,
-        final other => throw "Unknown power supply status: $other",
-      };
-
-  int get capacity => getInt("capacity");
-
-  @override
-  String toString() {
-    return "SysfsPowerSupply($name)";
+  T? optional<T>(T Function() f) {
+    try {
+      return f();
+    } catch (e) {
+      return null;
+    }
   }
 }
 
-Future<List<String>> _listNames(String klass) async {
+Future<List<String>> listSysfsNames(String klass) async {
   return await Directory("/sys/class/$klass")
       .list()
       .map((e) => e.path.split("/").last)
       .toList();
-}
-
-enum SysfsPowerSupplyType {
-  battery,
-  ups,
-  mains,
-  usb,
-  wireless,
-  unknown,
-}
-
-enum SysfsPowerSupplyStatus {
-  charging,
-  discharging,
-  notCharging,
-  full,
-  unknown,
 }
