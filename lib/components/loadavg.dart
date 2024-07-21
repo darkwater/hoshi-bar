@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:fdls/constants.dart';
 import 'package:fdls/widgets/component.dart';
+import 'package:fdls/widgets/simple_graph.dart';
 import 'package:fdls/widgets/two_row.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ Stream<List<LoadAvg>> loadAvgStream(LoadAvgStreamRef ref) async* {
 
     yield history;
 
-    await Future.delayed(const Duration(seconds: 10));
+    await Future.delayed(const Duration(seconds: 1));
   }
 }
 
@@ -71,35 +72,26 @@ class LoadAvgComponent extends ConsumerWidget {
         return Stack(
           children: [
             Positioned.fill(
-              child: LineChart(
-                LineChartData(
-                  lineTouchData: const LineTouchData(enabled: false),
-                  titlesData: const FlTitlesData(show: false),
-                  gridData: const FlGridData(show: false),
-                  clipData: const FlClipData.all(),
-                  borderData: FlBorderData(show: false),
-                  minY: 0,
-                  maxY: history.last.numCpu.toDouble(),
-                  minX: history.length - _historyLength + 1,
-                  maxX: history.length - 1,
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: history
-                          .asMap()
-                          .entries
-                          .map((e) => FlSpot(e.key.toDouble(), e.value.min1))
-                          .toList(),
-                      isCurved: false,
-                      barWidth: 0,
-                      dotData: const FlDotData(show: false),
-                      belowBarData: BarAreaData(
-                        show: true,
-                        color: Colors.blue.withOpacity(0.5),
-                      ),
+              child: SimpleGraph(
+                span: _historyLength,
+                length: history.length,
+                maxY: history.last.numCpu.toDouble(),
+                data: [
+                  LineChartBarData(
+                    spots: history
+                        .asMap()
+                        .entries
+                        .map((e) => FlSpot(e.key.toDouble(), e.value.min1))
+                        .toList(),
+                    isCurved: false,
+                    barWidth: 0,
+                    dotData: const FlDotData(show: false),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: Colors.blue.withOpacity(0.5),
                     ),
-                  ],
-                ),
-                duration: Duration.zero,
+                  ),
+                ],
               ),
             ),
             Positioned.fill(
