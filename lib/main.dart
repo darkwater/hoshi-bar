@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fdls/components/battery.dart';
 import 'package:fdls/components/clock.dart';
 import 'package:fdls/providers/theme.dart';
 import 'package:flutter/material.dart';
@@ -29,30 +30,24 @@ class App extends ConsumerWidget {
           brightness: Brightness.dark,
         ),
       ),
-      home: const SizedBox(
-        height: 50,
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ClockComponent(),
-              ClockComponent(),
-              ClockComponent(),
-              ClockComponent(),
-              ClockComponent(),
-              const Spacer(),
-              ClockComponent(),
-              ClockComponent(),
-              ClockComponent(),
-              const Spacer(),
-              ClockComponent(),
-              ClockComponent(),
-              ClockComponent(),
-              ClockComponent(),
-              ClockComponent(),
-            ],
-          ),
+      home: const Padding(
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ClockComponent(),
+            ClockComponent(),
+            ClockComponent(),
+            ClockComponent(),
+            ClockComponent(),
+            Spacer(),
+            ClockComponent(),
+            ClockComponent(),
+            ClockComponent(),
+            Spacer(),
+            BatteryComponent(),
+            ClockComponent(),
+          ],
         ),
       ),
     );

@@ -26,7 +26,7 @@ static void my_application_activate(GApplication* application) {
   gtk_layer_set_anchor(window, GTK_LAYER_SHELL_EDGE_LEFT, TRUE);
   gtk_layer_set_anchor(window, GTK_LAYER_SHELL_EDGE_RIGHT, TRUE);
   gtk_layer_auto_exclusive_zone_enable(window);
-  gtk_widget_set_size_request(GTK_WIDGET(window), 500, 50);
+  gtk_widget_set_size_request(GTK_WIDGET(window), 500, 64);
 
   GdkScreen* screen;
   GdkVisual* visual;
