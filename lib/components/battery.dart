@@ -1,5 +1,7 @@
+import 'package:fdls/constants.dart';
 import 'package:fdls/sysfs/power_supply.dart';
 import 'package:fdls/widgets/component.dart';
+import 'package:fdls/widgets/two_row.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -63,26 +65,19 @@ class BatteryComponent extends ConsumerWidget {
           };
 
           return Component(
-            width: 54,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(icon, size: 16, color: color),
-                    Text("${(battery.capacity * 100).round()}%"),
-                  ],
+            width: fdlsSmallComponentWidth,
+            child: TwoRow(
+              color: color,
+              top: Text("${(battery.capacity * 100).round()}%"),
+              icon: Icon(icon),
+              bottom: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                clipBehavior: Clip.antiAlias,
+                child: LinearProgressIndicator(
+                  value: battery.capacity,
+                  valueColor: AlwaysStoppedAnimation<Color>(color),
                 ),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  clipBehavior: Clip.antiAlias,
-                  child: LinearProgressIndicator(
-                    value: battery.capacity,
-                    valueColor: AlwaysStoppedAnimation<Color>(color),
-                  ),
-                ),
-              ],
+              ),
             ),
           );
         }),

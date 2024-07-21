@@ -1,26 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'temperature.dart';
+part of 'loadavg.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$temperatureStreamHash() => r'844fa924c3e98281c45195da0ed451ab75212dde';
+String _$loadAvgStreamHash() => r'049d43bf2b55494b009ac8b35b1ccdf7dc35c65b';
 
-/// See also [temperatureStream].
-@ProviderFor(temperatureStream)
-final temperatureStreamProvider =
-    AutoDisposeStreamProvider<List<Temperature>>.internal(
-  temperatureStream,
-  name: r'temperatureStreamProvider',
+/// See also [loadAvgStream].
+@ProviderFor(loadAvgStream)
+final loadAvgStreamProvider = AutoDisposeStreamProvider<List<LoadAvg>>.internal(
+  loadAvgStream,
+  name: r'loadAvgStreamProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$temperatureStreamHash,
+      : _$loadAvgStreamHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef TemperatureStreamRef = AutoDisposeStreamProviderRef<List<Temperature>>;
+typedef LoadAvgStreamRef = AutoDisposeStreamProviderRef<List<LoadAvg>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

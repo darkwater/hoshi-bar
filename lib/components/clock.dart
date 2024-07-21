@@ -1,4 +1,6 @@
+import 'package:fdls/constants.dart';
 import 'package:fdls/widgets/component.dart';
+import 'package:fdls/widgets/two_row.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -54,27 +56,19 @@ class ClockComponent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Component.asyncValue(
       value: ref.watch(clockStreamProvider),
-      builder: (time) => Column(
-        children: [
-          Text(
-            DateFormat(ref.watch(clockFormatProvider)).format(time),
-            strutStyle: const StrutStyle(
-              forceStrutHeight: true,
-            ),
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-              fontFeatures: const [FontFeature.tabularFigures()],
-            ),
+      builder: (time) => TwoRow(
+        color: Colors.transparent,
+        top: Text(
+          DateFormat(ref.watch(clockFormatProvider)).format(time),
+          style: Theme.of(context).textTheme.titleMedium!.copyWith(
+            fontSize: 18,
+            height: 1,
+            fontFeatures: const [FontFeature.tabularFigures()],
           ),
-          Text(
-            DateFormat("EEE dd MMM").format(time),
-            strutStyle: const StrutStyle(
-              forceStrutHeight: true,
-            ),
-            style: Theme.of(context).textTheme.titleSmall!.copyWith(
-              fontFeatures: const [FontFeature.tabularFigures()],
-            ),
-          ),
-        ],
+        ),
+        bottom: Text(
+          DateFormat("EEE dd MMM").format(time),
+        ),
       ),
     );
   }

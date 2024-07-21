@@ -47,7 +47,7 @@ class _$BatteryCopyWithImpl<$Res, $Val extends Battery>
   $Res call({
     Object? id = null,
     Object? capacity = null,
-    Object? status = freezed,
+    Object? status = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -58,7 +58,7 @@ class _$BatteryCopyWithImpl<$Res, $Val extends Battery>
           ? _value.capacity
           : capacity // ignore: cast_nullable_to_non_nullable
               as double,
-      status: freezed == status
+      status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as SysfsPowerSupplyStatus,
@@ -89,7 +89,7 @@ class __$$BatteryImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? capacity = null,
-    Object? status = freezed,
+    Object? status = null,
   }) {
     return _then(_$BatteryImpl(
       id: null == id
@@ -100,7 +100,7 @@ class __$$BatteryImplCopyWithImpl<$Res>
           ? _value.capacity
           : capacity // ignore: cast_nullable_to_non_nullable
               as double,
-      status: freezed == status
+      status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as SysfsPowerSupplyStatus,
@@ -134,12 +134,11 @@ class _$BatteryImpl implements _Battery {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.capacity, capacity) ||
                 other.capacity == capacity) &&
-            const DeepCollectionEquality().equals(other.status, status));
+            (identical(other.status, status) || other.status == status));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, capacity, const DeepCollectionEquality().hash(status));
+  int get hashCode => Object.hash(runtimeType, id, capacity, status);
 
   @JsonKey(ignore: true)
   @override

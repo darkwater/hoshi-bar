@@ -1,5 +1,7 @@
+import 'package:fdls/constants.dart';
 import 'package:fdls/sysfs/hwmon.dart';
 import 'package:fdls/widgets/component.dart';
+import 'package:fdls/widgets/two_row.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,7 +24,7 @@ Stream<List<Temperature>> temperatureStream(TemperatureStreamRef ref) async* {
             ))
         .toList();
 
-    await Future.delayed(const Duration(seconds: 10));
+    await Future.delayed(const Duration(seconds: 5));
   }
 }
 
@@ -43,31 +45,21 @@ class TemperatureComponent extends ConsumerWidget {
     final devs = ref.watch(temperatureStreamProvider);
 
     return Component.asyncValue(
+      width: fdlsSmallComponentWidth,
       value: devs,
       builder: (value) {
         value.sort((a, b) => a.temperature.compareTo(b.temperature));
         final dev = value.last;
 
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Icon(
-                  Icons.thermostat,
-                  size: 16,
-                  color: Colors.orange,
-                ),
-                const SizedBox(width: 4),
-                Text("${dev.temperature.round()} °C"),
-              ],
-            ),
-            Text(
-              dev.name,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
+        return TwoRow(
+          icon: const Icon(Icons.thermostat),
+          top: Text("${dev.temperature.round()}°C"),
+          bottom: Text(
+            dev.name,
+            softWrap: false,
+            overflow: TextOverflow.clip,
+          ),
+          color: Colors.orange,
         );
       },
     );
