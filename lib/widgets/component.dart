@@ -1,3 +1,5 @@
+import 'package:fdls/constants.dart';
+import 'package:fdls/widgets/input_region.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -41,12 +43,14 @@ class Component<T> extends StatelessWidget {
       width: width,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
-        child: Material(
-          color: const Color.fromRGBO(0x21, 0x27, 0x33, 0.6),
-          shadowColor: Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
-          clipBehavior: Clip.antiAlias,
-          child: child,
+        child: InputRegion(
+          child: Material(
+            color: fdlsBackgroundColor,
+            shadowColor: Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
+            clipBehavior: Clip.antiAlias,
+            child: child,
+          ),
         ),
       ),
     );
