@@ -6,7 +6,7 @@ part of 'temperature.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$temperatureStreamHash() => r'844fa924c3e98281c45195da0ed451ab75212dde';
+String _$temperatureStreamHash() => r'999be1ed2497d1f4131888816962775da3a2cb69';
 
 /// See also [temperatureStream].
 @ProviderFor(temperatureStream)

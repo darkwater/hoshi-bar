@@ -5,6 +5,7 @@ import 'package:fdls/components/clock.dart';
 import 'package:fdls/components/loadavg.dart';
 import 'package:fdls/components/network.dart';
 import 'package:fdls/components/temperature.dart';
+import 'package:fdls/components/workspaces.dart';
 import 'package:fdls/widgets/render_rect_listener.dart';
 import 'package:fdls/providers/theme.dart';
 import 'package:flutter/material.dart';
@@ -48,11 +49,7 @@ class App extends ConsumerWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ClockComponent(),
-                    ClockComponent(),
-                    ClockComponent(),
-                    ClockComponent(),
-                    ClockComponent(),
+                    WorkspacesComponent(),
                     Spacer(),
                     ClockComponent(),
                     ClockComponent(),
