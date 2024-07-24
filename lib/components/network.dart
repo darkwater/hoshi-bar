@@ -14,7 +14,7 @@ part 'network.freezed.dart';
 
 const _historyLength = 100;
 const _maxY = 500 * 1024 * 1024 / 8; // 500 Mbps
-const _interval = Duration(seconds: 10);
+const _interval = fdlsUpdateFrequency;
 
 @riverpod
 Stream<List<NetworkUsage>> networkUsageStream(

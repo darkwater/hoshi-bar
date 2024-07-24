@@ -24,7 +24,7 @@ Stream<List<Battery>> batteryStream(BatteryStreamRef ref) async* {
             ))
         .toList();
 
-    await Future.delayed(const Duration(seconds: 10));
+    await Future.delayed(fdlsUpdateFrequency);
   }
 }
 

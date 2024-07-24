@@ -40,7 +40,7 @@ Stream<Map<SysfsHwmon, List<Temperature>>> temperatureStream(
 
     yield series;
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(fdlsUpdateFrequency);
   }
 }
 

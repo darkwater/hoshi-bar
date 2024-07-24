@@ -44,7 +44,7 @@ Stream<List<LoadAvg>> loadAvgStream(LoadAvgStreamRef ref) async* {
 
     yield history;
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(fdlsUpdateFrequency);
   }
 }
 
