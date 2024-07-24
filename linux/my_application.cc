@@ -1,7 +1,6 @@
 #include "my_application.h"
 #include <map>
 
-#include <flutter_linux/flutter_linux.h>
 #include <gtk-layer-shell/gtk-layer-shell.h>
 
 #include "flutter/generated_plugin_registrant.h"
@@ -16,9 +15,6 @@ G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 static std::map<int, cairo_rectangle_int_t> input_regions = {};
 
 static GtkWindow *window = nullptr;
-
-static void apply_input_regions();
-static void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call, gpointer user_data);
 
 // Implements GApplication::activate.
 static void my_application_activate(GApplication* application) {
@@ -56,6 +52,11 @@ static void my_application_activate(GApplication* application) {
   gtk_widget_show(GTK_WIDGET(view));
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
 
+  GtkWidget* gl_area = find_gl_area(GTK_WIDGET(view));
+  if (gl_area != NULL) {
+    gtk_gl_area_set_has_alpha(GTK_GL_AREA(gl_area), TRUE);
+  }
+
   fl_register_plugins(FL_PLUGIN_REGISTRY(view));
 
   FlEngine *engine = fl_view_get_engine(view);
@@ -76,7 +77,7 @@ static void respond(FlMethodCall *method_call, FlMethodResponse *response) {
   }
 }
 
-static void apply_input_regions() {
+void apply_input_regions() {
   cairo_region_t *final_region = cairo_region_create();
 
   for (const auto& entry : input_regions) {
@@ -89,7 +90,7 @@ static void apply_input_regions() {
   cairo_region_destroy(final_region);
 }
 
-static void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call, gpointer user_data) {
+void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call, gpointer user_data) {
   const gchar *method = fl_method_call_get_name(method_call);
   FlValue *args = fl_method_call_get_args(method_call);
 
@@ -200,4 +201,25 @@ MyApplication* my_application_new() {
                                      "application-id", APPLICATION_ID,
                                      "flags", G_APPLICATION_NON_UNIQUE,
                                      nullptr));
+}
+
+GtkWidget* find_gl_area(GtkWidget* widget) {
+    if (GTK_IS_GL_AREA(widget)) {
+        return widget;
+    }
+
+    if (GTK_IS_CONTAINER(widget)) {
+        GList* children = gtk_container_get_children(GTK_CONTAINER(widget));
+        for (GList* iter = children; iter != NULL; iter = g_list_next(iter)) {
+            GtkWidget* child = GTK_WIDGET(iter->data);
+            GtkWidget* gl_area = find_gl_area(child);
+            if (gl_area != NULL) {
+                g_list_free(children);
+                return gl_area;
+            }
+        }
+        g_list_free(children);
+    }
+
+    return NULL;
 }
