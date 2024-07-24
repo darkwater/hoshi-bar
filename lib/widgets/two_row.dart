@@ -4,20 +4,21 @@ class TwoRow extends StatelessWidget {
   final Widget? icon;
   final Widget top;
   final Widget bottom;
-  final Color color;
 
   const TwoRow({
     this.icon,
     required this.top,
     required this.bottom,
-    required this.color,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return IconTheme.merge(
-      data: IconThemeData(size: 16, color: color),
+      data: IconThemeData(
+        size: 16,
+        color: Theme.of(context).primaryColor,
+      ),
       child: LayoutBuilder(
         builder: (context, constraints) => Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),

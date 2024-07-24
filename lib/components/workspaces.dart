@@ -63,6 +63,7 @@ class WorkspacesComponent extends ConsumerWidget {
                   child: Opacity(
                     opacity: workspace == null ? 0.1 : 1,
                     child: Component(
+                      primaryColor: Colors.blue,
                       border: workspace != null && workspace.visible
                           ? const BorderSide(width: 1.2, color: Colors.blue)
                           : BorderSide.none,
@@ -82,7 +83,10 @@ class WorkspacesComponent extends ConsumerWidget {
               children: widgets,
             );
           },
-          error: (e, st) => Component(child: ComponentErrorContents(e, st)),
+          error: (e, st) => Component(
+            primaryColor: Colors.red,
+            child: ComponentErrorContents(e, st),
+          ),
           loading: () => const Center(child: CircularProgressIndicator()),
         );
 

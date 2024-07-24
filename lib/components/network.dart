@@ -90,9 +90,10 @@ class NetworkComponent extends ConsumerWidget {
     final usage = ref.watch(networkUsageStreamProvider);
 
     return Component.asyncValue(
+      primaryColor: Colors.green,
       width: fdlsMediumComponentWidth,
       value: usage,
-      builder: (history) {
+      builder: (context, history) {
         return Stack(
           children: [
             Positioned.fill(
@@ -135,7 +136,6 @@ class NetworkComponent extends ConsumerWidget {
             ),
             Positioned.fill(
               child: TwoRow(
-                color: Colors.blue,
                 top: Row(
                   children: [
                     const Icon(Icons.keyboard_arrow_down, color: Colors.green),

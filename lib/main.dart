@@ -6,6 +6,7 @@ import 'package:fdls/components/loadavg.dart';
 import 'package:fdls/components/network.dart';
 import 'package:fdls/components/temperature.dart';
 import 'package:fdls/components/workspaces.dart';
+import 'package:fdls/constants.dart';
 import 'package:fdls/widgets/render_rect_listener.dart';
 import 'package:fdls/providers/theme.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class App extends ConsumerWidget {
             left: 0,
             bottom: 0,
             right: 0,
-            height: 64,
+            height: fdlsBarHeight,
             child: RenderRectListener(
               listener: (box) {
                 print("setting exclusive zone height to ${box.size.height}");
@@ -50,10 +51,6 @@ class App extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     WorkspacesComponent(),
-                    Spacer(),
-                    ClockComponent(),
-                    ClockComponent(),
-                    ClockComponent(),
                     Spacer(),
                     NetworkComponent(),
                     LoadAvgComponent(),

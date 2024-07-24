@@ -23,7 +23,7 @@ Stream<List<Temperature>> temperatureStream(TemperatureStreamRef ref) async* {
             ))
         .toList();
 
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 10));
   }
 }
 
@@ -44,9 +44,10 @@ class TemperatureComponent extends ConsumerWidget {
     final devs = ref.watch(temperatureStreamProvider);
 
     return Component.asyncValue(
+      primaryColor: Colors.orange,
       width: fdlsSmallComponentWidth,
       value: devs,
-      builder: (value) {
+      builder: (context, value) {
         value.sort((a, b) => a.temperature.compareTo(b.temperature));
         final dev = value.last;
 
@@ -58,7 +59,6 @@ class TemperatureComponent extends ConsumerWidget {
             softWrap: false,
             overflow: TextOverflow.clip,
           ),
-          color: Colors.orange,
         );
       },
     );

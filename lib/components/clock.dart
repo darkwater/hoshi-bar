@@ -54,9 +54,9 @@ class ClockComponent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Component.asyncValue(
+      primaryColor: Colors.amber,
       value: ref.watch(clockStreamProvider),
-      builder: (time) => TwoRow(
-        color: Colors.transparent,
+      builder: (context, time) => TwoRow(
         top: Text(
           DateFormat(ref.watch(clockFormatProvider)).format(time),
           style: Theme.of(context).textTheme.titleMedium!.copyWith(

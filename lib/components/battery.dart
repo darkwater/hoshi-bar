@@ -65,9 +65,9 @@ class BatteryComponent extends ConsumerWidget {
           };
 
           return Component(
+            primaryColor: color,
             width: fdlsSmallComponentWidth,
             child: TwoRow(
-              color: color,
               top: Text("${(battery.capacity * 100).round()}%"),
               icon: Icon(icon),
               bottom: ClipRRect(
