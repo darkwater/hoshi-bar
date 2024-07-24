@@ -6,7 +6,7 @@ part of 'loadavg.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$loadAvgStreamHash() => r'3d5de6fd3911053e242fb9f1ad183e6488dacca9';
+String _$loadAvgStreamHash() => r'382bd30ff5f4398c3cc92131f5fdc27243246b13';
 
 /// See also [loadAvgStream].
 @ProviderFor(loadAvgStream)

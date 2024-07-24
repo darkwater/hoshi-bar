@@ -86,6 +86,7 @@ class LoadAvgComponent extends ConsumerWidget {
                   LineChartBarData(
                     spots: history
                         .skip(max(history.length - _historyLength, 0))
+                        .take(_historyLength)
                         .toList()
                         .asMap()
                         .entries
@@ -96,7 +97,7 @@ class LoadAvgComponent extends ConsumerWidget {
                     dotData: const FlDotData(show: false),
                     belowBarData: BarAreaData(
                       show: true,
-                      color: Theme.of(context).primaryColor.withOpacity(0.5),
+                      color: Theme.of(context).primaryColor.withOpacity(0.4),
                     ),
                   ),
                 ],
@@ -172,9 +173,10 @@ class LoadAvgHover extends ConsumerWidget {
             isCurved: false,
             barWidth: 0,
             dotData: const FlDotData(show: false),
+            color: Theme.of(context).primaryColor,
             belowBarData: BarAreaData(
               show: true,
-              color: Colors.blue.withOpacity(0.5),
+              color: Theme.of(context).primaryColor.withOpacity(0.5),
             ),
           ),
         ],

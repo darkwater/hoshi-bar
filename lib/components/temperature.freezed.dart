@@ -16,8 +16,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Temperature {
-  String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
   double get temperature => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -31,7 +29,7 @@ abstract class $TemperatureCopyWith<$Res> {
           Temperature value, $Res Function(Temperature) then) =
       _$TemperatureCopyWithImpl<$Res, Temperature>;
   @useResult
-  $Res call({String id, String name, double temperature});
+  $Res call({double temperature});
 }
 
 /// @nodoc
@@ -47,19 +45,9 @@ class _$TemperatureCopyWithImpl<$Res, $Val extends Temperature>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? name = null,
     Object? temperature = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       temperature: null == temperature
           ? _value.temperature
           : temperature // ignore: cast_nullable_to_non_nullable
@@ -76,7 +64,7 @@ abstract class _$$TemperatureImplCopyWith<$Res>
       __$$TemperatureImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, double temperature});
+  $Res call({double temperature});
 }
 
 /// @nodoc
@@ -90,19 +78,9 @@ class __$$TemperatureImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? name = null,
     Object? temperature = null,
   }) {
     return _then(_$TemperatureImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
       temperature: null == temperature
           ? _value.temperature
           : temperature // ignore: cast_nullable_to_non_nullable
@@ -114,19 +92,14 @@ class __$$TemperatureImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$TemperatureImpl implements _Temperature {
-  const _$TemperatureImpl(
-      {required this.id, required this.name, required this.temperature});
+  const _$TemperatureImpl({required this.temperature});
 
-  @override
-  final String id;
-  @override
-  final String name;
   @override
   final double temperature;
 
   @override
   String toString() {
-    return 'Temperature(id: $id, name: $name, temperature: $temperature)';
+    return 'Temperature(temperature: $temperature)';
   }
 
   @override
@@ -134,14 +107,12 @@ class _$TemperatureImpl implements _Temperature {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TemperatureImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
             (identical(other.temperature, temperature) ||
                 other.temperature == temperature));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, temperature);
+  int get hashCode => Object.hash(runtimeType, temperature);
 
   @JsonKey(ignore: true)
   @override
@@ -151,15 +122,9 @@ class _$TemperatureImpl implements _Temperature {
 }
 
 abstract class _Temperature implements Temperature {
-  const factory _Temperature(
-      {required final String id,
-      required final String name,
-      required final double temperature}) = _$TemperatureImpl;
+  const factory _Temperature({required final double temperature}) =
+      _$TemperatureImpl;
 
-  @override
-  String get id;
-  @override
-  String get name;
   @override
   double get temperature;
   @override

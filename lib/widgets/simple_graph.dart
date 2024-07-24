@@ -8,6 +8,7 @@ class SimpleGraph extends StatelessWidget {
   /// Amount of actual samples to display
   final int length;
 
+  final double minY;
   final double maxY;
   final List<LineChartBarData> data;
 
@@ -16,6 +17,7 @@ class SimpleGraph extends StatelessWidget {
     required this.length,
     required this.maxY,
     required this.data,
+    this.minY = 0,
     super.key,
   });
 
@@ -28,7 +30,7 @@ class SimpleGraph extends StatelessWidget {
         gridData: const FlGridData(show: false),
         clipData: const FlClipData.all(),
         borderData: FlBorderData(show: false),
-        minY: 0,
+        minY: minY,
         maxY: maxY,
         minX: length - span + 1,
         maxX: length - 1,

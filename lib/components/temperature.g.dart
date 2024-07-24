@@ -6,12 +6,12 @@ part of 'temperature.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$temperatureStreamHash() => r'999be1ed2497d1f4131888816962775da3a2cb69';
+String _$temperatureStreamHash() => r'9d322ceddd591a91f976e59a0cb970ee22961abc';
 
 /// See also [temperatureStream].
 @ProviderFor(temperatureStream)
 final temperatureStreamProvider =
-    AutoDisposeStreamProvider<List<Temperature>>.internal(
+    AutoDisposeStreamProvider<Map<SysfsHwmon, List<Temperature>>>.internal(
   temperatureStream,
   name: r'temperatureStreamProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,6 +21,7 @@ final temperatureStreamProvider =
   allTransitiveDependencies: null,
 );
 
-typedef TemperatureStreamRef = AutoDisposeStreamProviderRef<List<Temperature>>;
+typedef TemperatureStreamRef
+    = AutoDisposeStreamProviderRef<Map<SysfsHwmon, List<Temperature>>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

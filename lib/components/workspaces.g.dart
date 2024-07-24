@@ -6,11 +6,11 @@ part of 'workspaces.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$hyprlandHash() => r'c48958c17a415ba0ccb578eddc27ec5585580aca';
+String _$hyprlandHash() => r'5442e3ac54c2ee93a2df363effcb8328379c56bf';
 
 /// See also [hyprland].
 @ProviderFor(hyprland)
-final hyprlandProvider = AutoDisposeFutureProvider<HyprlandIPC>.internal(
+final hyprlandProvider = FutureProvider<HyprlandIPC>.internal(
   hyprland,
   name: r'hyprlandProvider',
   debugGetCreateSourceHash:
@@ -19,7 +19,7 @@ final hyprlandProvider = AutoDisposeFutureProvider<HyprlandIPC>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef HyprlandRef = AutoDisposeFutureProviderRef<HyprlandIPC>;
+typedef HyprlandRef = FutureProviderRef<HyprlandIPC>;
 String _$workspacesHash() => r'8770d6fb27dfa1d62dde4de9d5cb959bface6cf6';
 
 /// See also [workspaces].

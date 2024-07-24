@@ -114,7 +114,7 @@ class NetworkComponent extends ConsumerWidget {
                     dotData: const FlDotData(show: false),
                     aboveBarData: BarAreaData(
                       show: true,
-                      color: Colors.red.withOpacity(0.5),
+                      color: Colors.red.withOpacity(0.4),
                     ),
                   ),
                   LineChartBarData(
@@ -128,7 +128,7 @@ class NetworkComponent extends ConsumerWidget {
                     dotData: const FlDotData(show: false),
                     belowBarData: BarAreaData(
                       show: true,
-                      color: Colors.green.withOpacity(0.5),
+                      color: Colors.green.withOpacity(0.4),
                     ),
                   ),
                 ],
