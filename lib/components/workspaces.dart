@@ -37,11 +37,18 @@ Future<List<Workspace>> getWorkspaces(hypr.HyprlandIPC hypr) async {
 class Workspace {
   final hypr.Workspace workspace;
   final bool visible;
+  final double aspectRatio;
 
   Workspace({
     required this.workspace,
     required List<Monitor> monitors,
-  }) : visible = monitors.any((e) => e.activeWorkspaceId == workspace.id);
+  })  : visible = monitors.any((e) => e.activeWorkspaceId == workspace.id),
+        aspectRatio = switch (monitors
+            .where((e) => e.name == workspace.monitorName)
+            .firstOrNull) {
+          Monitor monitor => monitor.rect.width / monitor.rect.height,
+          null => 16 / 9,
+        };
 }
 
 class WorkspacesComponent extends ConsumerWidget {
@@ -59,7 +66,7 @@ class WorkspacesComponent extends ConsumerWidget {
 
               widgets.add(
                 AspectRatio(
-                  aspectRatio: 16 / 9,
+                  aspectRatio: workspace?.aspectRatio ?? 16 / 9,
                   child: Opacity(
                     opacity: workspace == null ? 0.1 : 1,
                     child: Component(
