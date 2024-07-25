@@ -5,4 +5,7 @@ const double fdlsSmallComponentWidth = 90;
 const double fdlsMediumComponentWidth = 150;
 const Color fdlsBackgroundColor = Color.fromRGBO(0x21, 0x27, 0x33, 0.8);
 const double fdlsBarHeight = 64;
-const Duration fdlsUpdateFrequency = Duration(seconds: kDebugMode ? 1 : 10);
+const Duration fdlsUpdateFrequency =
+    kDebugMode ? Duration(seconds: 1) : Duration(seconds: 10);
+const Duration fdlsGraphPer100Px =
+    kDebugMode ? Duration(minutes: 1) : Duration(minutes: 5);

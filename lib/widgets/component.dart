@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:fdls/constants.dart';
+import 'package:fdls/main.dart';
 import 'package:fdls/widgets/input_region.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -74,7 +77,7 @@ class Component<T> extends StatelessWidget {
   }
 }
 
-class _Interactivity extends StatefulWidget {
+class _Interactivity extends ConsumerStatefulWidget {
   final Function()? onTap;
   final Widget Function(BuildContext)? onHoverBuilder;
   final Widget child;
@@ -86,10 +89,10 @@ class _Interactivity extends StatefulWidget {
   });
 
   @override
-  State<_Interactivity> createState() => _InteractivityState();
+  ConsumerState<_Interactivity> createState() => _InteractivityState();
 }
 
-class _InteractivityState extends State<_Interactivity> {
+class _InteractivityState extends ConsumerState<_Interactivity> {
   OverlayEntry? _hoverOverlay;
   OverlayEntry? _tapOverlay;
   // Rect? _alignRect;
@@ -101,14 +104,14 @@ class _InteractivityState extends State<_Interactivity> {
       onHover: widget.onHoverBuilder != null
           ? (enter) {
               if (enter) {
-                // final box = context.findRenderObject() as RenderBox;
-                // _alignRect = box.localToGlobal(Offset.zero) & box.size;
+                final box = context.findRenderObject() as RenderBox;
+                final alignRect = box.localToGlobal(Offset.zero) & box.size;
 
                 final theme = Theme.of(context);
                 _hoverOverlay = OverlayEntry(builder: (context) {
                   return Positioned(
                     bottom: fdlsBarHeight,
-                    right: 20,
+                    right: ref.read(barWidthProvider) - alignRect.right,
                     child: Theme(
                       data: theme,
                       child: widget.onHoverBuilder!(context),
@@ -142,9 +145,9 @@ class ComponentErrorContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("$error\n$stackTrace");
     return Tooltip(
       message: error.toString(),
-      verticalOffset: -16,
       child: Container(
         color: Colors.red.withOpacity(0.2),
         child: const Icon(

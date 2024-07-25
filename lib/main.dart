@@ -18,6 +18,8 @@ Future<void> main() async {
   runApp(const ProviderScope(child: App()));
 }
 
+final barWidthProvider = StateProvider<double>((ref) => 0);
+
 class App extends ConsumerWidget {
   const App({super.key});
 
@@ -41,6 +43,8 @@ class App extends ConsumerWidget {
             height: fdlsBarHeight,
             child: RenderRectListener(
               listener: (box) {
+                ref.read(barWidthProvider.notifier).state = box.size.width;
+
                 print("setting exclusive zone height to ${box.size.height}");
                 const MethodChannel("fdls").invokeMethod(
                     "set_exclusive_zone", {"height": box.size.height.toInt()});

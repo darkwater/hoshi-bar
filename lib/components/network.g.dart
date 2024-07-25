@@ -7,12 +7,12 @@ part of 'network.dart';
 // **************************************************************************
 
 String _$networkUsageStreamHash() =>
-    r'6ff68533f6d58c7df35673d83801b17755e3e15b';
+    r'cc861eaf0171e0bb54505a06f8b476fee9b9ae5c';
 
 /// See also [networkUsageStream].
 @ProviderFor(networkUsageStream)
 final networkUsageStreamProvider =
-    AutoDisposeStreamProvider<List<NetworkUsage>>.internal(
+    AutoDisposeStreamProvider<History<String, NetworkUsage>>.internal(
   networkUsageStream,
   name: r'networkUsageStreamProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,6 +23,6 @@ final networkUsageStreamProvider =
 );
 
 typedef NetworkUsageStreamRef
-    = AutoDisposeStreamProviderRef<List<NetworkUsage>>;
+    = AutoDisposeStreamProviderRef<History<String, NetworkUsage>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

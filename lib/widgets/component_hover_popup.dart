@@ -14,8 +14,8 @@ class ComponentHoverPopup extends HookConsumerWidget {
   const ComponentHoverPopup({
     required this.icon,
     required this.title,
-    this.width,
-    this.height,
+    this.width = 300,
+    this.height = 200,
     this.background,
     this.underTitle = const [],
     super.key,

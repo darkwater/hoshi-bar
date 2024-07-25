@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:fdls/constants.dart';
+import 'package:fdls/utils/history.dart';
 import 'package:fdls/widgets/component.dart';
 import 'package:fdls/widgets/component_hover_popup.dart';
 import 'package:fdls/widgets/simple_graph.dart';
@@ -15,32 +15,28 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'loadavg.g.dart';
 part 'loadavg.freezed.dart';
 
-const _historyLength = 60;
-const _longHistoryLength = 300;
-
 @riverpod
-Stream<List<LoadAvg>> loadAvgStream(LoadAvgStreamRef ref) async* {
+Stream<History<void, LoadAvg>> loadAvgStream(LoadAvgStreamRef ref) async* {
   final cpuinfo = await File("/proc/cpuinfo").readAsString();
   final numCpu =
       cpuinfo.split("\n").where((e) => e.startsWith("processor\t")).length;
 
-  final history = <LoadAvg>[];
+  final history = History<void, LoadAvg>();
 
   while (true) {
     final fields = (await File("/proc/loadavg").readAsString()).split(" ");
-    history.add(LoadAvg(
-      min1: double.parse(fields[0]),
-      min5: double.parse(fields[1]),
-      min15: double.parse(fields[2]),
-      running: int.parse(fields[3].split("/").first),
-      total: int.parse(fields[3].split("/").last),
-      pid: int.parse(fields[4]),
-      numCpu: numCpu,
-    ));
-
-    if (history.length > _longHistoryLength) {
-      history.removeAt(0);
-    }
+    history.addValue(
+      null,
+      LoadAvg(
+        min1: double.parse(fields[0]),
+        min5: double.parse(fields[1]),
+        min15: double.parse(fields[2]),
+        running: int.parse(fields[3].split("/").first),
+        total: int.parse(fields[3].split("/").last),
+        pid: int.parse(fields[4]),
+        numCpu: numCpu,
+      ),
+    );
 
     yield history;
 
@@ -77,37 +73,12 @@ class LoadAvgComponent extends ConsumerWidget {
       builder: (context, history) {
         return Stack(
           children: [
-            Positioned.fill(
-              child: SimpleGraph(
-                span: _historyLength,
-                length: min(history.length, _historyLength),
-                maxY: history.last.numCpu.toDouble(),
-                data: [
-                  LineChartBarData(
-                    spots: history
-                        .skip(max(history.length - _historyLength, 0))
-                        .take(_historyLength)
-                        .toList()
-                        .asMap()
-                        .entries
-                        .map((e) => FlSpot(e.key.toDouble(), e.value.min1))
-                        .toList(),
-                    isCurved: false,
-                    barWidth: 0,
-                    dotData: const FlDotData(show: false),
-                    belowBarData: BarAreaData(
-                      show: true,
-                      color: Theme.of(context).primaryColor.withOpacity(0.4),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            Positioned.fill(child: _LoadAvgGraph(history, detailed: false)),
             Positioned.fill(
               child: TwoRow(
                 icon: const Icon(Icons.speed),
                 top: Text(
-                  "${(history.last.min1 / history.last.numCpu * 100).round()}%",
+                  "${(history[null].lastValue!.min1 / history[null].lastValue!.numCpu * 100).round()}%",
                   textAlign: TextAlign.right,
                   overflow: TextOverflow.visible,
                   softWrap: false,
@@ -119,6 +90,33 @@ class LoadAvgComponent extends ConsumerWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class _LoadAvgGraph extends StatelessWidget {
+  final History<void, LoadAvg> history;
+  final bool detailed;
+
+  const _LoadAvgGraph(this.history, {required this.detailed});
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleGraph(
+      maxY: history[null].lastValue!.numCpu.toDouble(),
+      data: [
+        LineChartBarData(
+          spots: history[null].toSpots((v) => v.min1),
+          isCurved: false,
+          barWidth: 0,
+          dotData: const FlDotData(show: false),
+          color: Theme.of(context).primaryColor,
+          belowBarData: BarAreaData(
+            show: true,
+            color: Theme.of(context).primaryColor.withOpacity(0.4),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -137,8 +135,6 @@ class LoadAvgHover extends ConsumerWidget {
     return ComponentHoverPopup(
       icon: Icons.speed,
       title: "System Load",
-      width: 400,
-      height: 300,
       underTitle: [
         Row(
           children: [
@@ -148,9 +144,9 @@ class LoadAvgHover extends ConsumerWidget {
               "15 min:  ",
             ),
             Text(
-              "${history.last.min1.toStringAsFixed(2)}\n"
-              "${history.last.min5.toStringAsFixed(2)}\n"
-              "${history.last.min15.toStringAsFixed(2)}",
+              "${history[null].lastValue!.min1.toStringAsFixed(2)}\n"
+              "${history[null].lastValue!.min5.toStringAsFixed(2)}\n"
+              "${history[null].lastValue!.min15.toStringAsFixed(2)}",
               textAlign: TextAlign.right,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                 fontFeatures: const [FontFeature.tabularFigures()],
@@ -159,28 +155,7 @@ class LoadAvgHover extends ConsumerWidget {
           ],
         ),
       ],
-      background: SimpleGraph(
-        span: _longHistoryLength,
-        length: min(history.length, _longHistoryLength),
-        maxY: history.last.numCpu.toDouble(),
-        data: [
-          LineChartBarData(
-            spots: history
-                .asMap()
-                .entries
-                .map((e) => FlSpot(e.key.toDouble(), e.value.min1))
-                .toList(),
-            isCurved: false,
-            barWidth: 0,
-            dotData: const FlDotData(show: false),
-            color: Theme.of(context).primaryColor,
-            belowBarData: BarAreaData(
-              show: true,
-              color: Theme.of(context).primaryColor.withOpacity(0.5),
-            ),
-          ),
-        ],
-      ),
+      background: _LoadAvgGraph(history, detailed: true),
     );
   }
 }
