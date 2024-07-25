@@ -20,13 +20,13 @@ const _interval = fdlsUpdateFrequency;
 Stream<List<NetworkUsage>> networkUsageStream(
   NetworkUsageStreamRef ref,
 ) async* {
-  final devices = (await SysfsNet.list())
-      .where((dev) => dev.id.startsWith("en") || dev.id.startsWith("wl"))
-      .toList();
-
   final history = <NetworkUsage>[];
 
   while (true) {
+    final devices = (await SysfsNet.list())
+        .where((dev) => dev.id.startsWith("en") || dev.id.startsWith("wl"))
+        .toList();
+
     final nowRx = devices.fold<int>(0, (prev, dev) => prev + dev.rxBytes);
     final nowTx = devices.fold<int>(0, (prev, dev) => prev + dev.txBytes);
 
