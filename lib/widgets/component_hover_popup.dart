@@ -1,4 +1,5 @@
 import 'package:fdls/constants.dart';
+import 'package:fdls/providers/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -38,61 +39,59 @@ class ComponentHoverPopup extends HookConsumerWidget {
       initialValue: 0,
     );
 
-    final offset = Tween<Offset>(begin: const Offset(0.5, 0), end: Offset.zero)
+    final offset = Tween<Offset>(begin: const Offset(0, 0.5), end: Offset.zero)
         .animate(CurvedAnimation(
             parent: slideCtrl, curve: Easing.standardDecelerate));
 
     slideCtrl.forward();
 
+    final expanded = ref.watch(popupExpandedProvider);
+
     return SlideTransition(
       position: offset,
+      transformHitTests: false,
       child: FadeTransition(
         opacity: fade,
-        child: IgnorePointer(
-          child: Material(
-            color: fdlsBackgroundColor,
-            shadowColor: Colors.transparent,
-            clipBehavior: Clip.antiAlias,
-            shape: RoundedRectangleBorder(
-              side: BorderSide(width: 1.2, color: Colors.grey.withOpacity(0.2)),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: SizedBox(
-              width: 400,
-              height: 300,
-              child: Stack(
-                children: [
-                  if (background != null) background!,
-                  Positioned(
-                    left: 14,
-                    top: 14,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          icon,
-                          size: 24,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        const SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              title,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            const SizedBox(height: 4),
-                            ...underTitle,
-                          ],
-                        ),
-                      ],
-                    ),
+        child: Material(
+          color: fdlsBackgroundColor,
+          shadowColor: Colors.transparent,
+          clipBehavior: Clip.antiAlias,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(width: 1.2, color: Colors.grey.withOpacity(0.2)),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Stack(
+            children: [
+              if (background != null) background!,
+              if (expanded)
+                Positioned(
+                  left: 14,
+                  top: 14,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        icon,
+                        size: 24,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      const SizedBox(width: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 4),
+                          ...underTitle,
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
+                ),
+            ],
           ),
         ),
       ),

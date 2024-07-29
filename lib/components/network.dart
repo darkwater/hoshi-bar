@@ -126,8 +126,7 @@ class NetworkComponent extends ConsumerWidget {
       primaryColor: Colors.green,
       width: fdlsMediumComponentWidth,
       value: usage,
-      onHoverBuilder: (context) => const NetworkHover(),
-      onTap: () => print("tapped"),
+      popup: const NetworkHover(),
       builder: (context, history) {
         return Stack(
           children: [

@@ -1,7 +1,5 @@
-import 'dart:developer';
-
 import 'package:fdls/constants.dart';
-import 'package:fdls/main.dart';
+import 'package:fdls/providers/popup.dart';
 import 'package:fdls/widgets/input_region.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,7 +9,7 @@ class Component<T> extends StatelessWidget {
   final double? width;
   final BorderSide border;
   final Function()? onTap;
-  final Widget Function(BuildContext)? onHoverBuilder;
+  final Widget? popup;
   final Widget child;
 
   const Component({
@@ -19,7 +17,7 @@ class Component<T> extends StatelessWidget {
     this.width,
     this.border = BorderSide.none,
     this.onTap,
-    this.onHoverBuilder,
+    this.popup,
     required this.child,
     super.key,
   });
@@ -31,7 +29,7 @@ class Component<T> extends StatelessWidget {
     this.width,
     this.border = BorderSide.none,
     this.onTap,
-    this.onHoverBuilder,
+    this.popup,
     super.key,
   }) : child = Builder(
           builder: (context) => value.when(
@@ -66,7 +64,7 @@ class Component<T> extends StatelessWidget {
               data: Theme.of(context).copyWith(primaryColor: primaryColor),
               child: _Interactivity(
                 onTap: onTap,
-                onHoverBuilder: onHoverBuilder,
+                popup: popup,
                 child: child,
               ),
             ),
@@ -79,12 +77,12 @@ class Component<T> extends StatelessWidget {
 
 class _Interactivity extends ConsumerStatefulWidget {
   final Function()? onTap;
-  final Widget Function(BuildContext)? onHoverBuilder;
+  final Widget? popup;
   final Widget child;
 
   const _Interactivity({
     required this.onTap,
-    this.onHoverBuilder,
+    this.popup,
     required this.child,
   });
 
@@ -93,41 +91,53 @@ class _Interactivity extends ConsumerStatefulWidget {
 }
 
 class _InteractivityState extends ConsumerState<_Interactivity> {
-  OverlayEntry? _hoverOverlay;
-  OverlayEntry? _tapOverlay;
-  // Rect? _alignRect;
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.onTap,
-      onHover: widget.onHoverBuilder != null
+      onHover: widget.popup != null
           ? (enter) {
               if (enter) {
+                if (ref.read(popupExpandedProvider)) return;
+
+                ref.read(popupProvider.notifier).state = widget.popup!;
+
                 final box = context.findRenderObject() as RenderBox;
-                final alignRect = box.localToGlobal(Offset.zero) & box.size;
+                final rect = box.localToGlobal(Offset.zero) & box.size;
 
-                final theme = Theme.of(context);
-                _hoverOverlay = OverlayEntry(builder: (context) {
-                  return Positioned(
-                    bottom: fdlsBarHeight,
-                    right: ref.read(barWidthProvider) - alignRect.right,
-                    child: Theme(
-                      data: theme,
-                      child: widget.onHoverBuilder!(context),
-                    ),
-                  );
-                });
+                ref.read(popupAnchorRectProvider.notifier).state = rect;
 
-                Overlay.of(context, debugRequiredFor: widget)
-                    .insert(_hoverOverlay!);
-              } else {
-                _hoverOverlay?.remove();
-                _hoverOverlay?.dispose();
-                _hoverOverlay = null;
+                ref.read(popupSizeProvider.notifier).state =
+                    const Size(240, 140);
+
+                ref.read(popupThemeProvider.notifier).state = Theme.of(context);
+              } else if (!ref.read(popupExpandedProvider)) {
+                ref.read(popupProvider.notifier).state = null;
               }
             }
           : null,
+      onTap: (widget.onTap == null && widget.popup == null)
+          ? null
+          : () {
+              if (widget.onTap != null) widget.onTap!();
+              if (widget.popup == null) return;
+
+              if (ref.read(popupExpandedProvider)) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ref.read(popupProvider.notifier).state = widget.popup!;
+
+                  final box = context.findRenderObject() as RenderBox;
+                  final rect = box.localToGlobal(Offset.zero) & box.size;
+
+                  ref.read(popupAnchorRectProvider.notifier).state = rect;
+                  ref.read(popupThemeProvider.notifier).state =
+                      Theme.of(context);
+                });
+              } else {
+                ref.read(popupExpandedProvider.notifier).state = true;
+              }
+
+              ref.read(popupSizeProvider.notifier).state = const Size(480, 300);
+            },
       child: widget.child,
     );
   }

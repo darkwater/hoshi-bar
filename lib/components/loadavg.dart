@@ -68,8 +68,7 @@ class LoadAvgComponent extends ConsumerWidget {
       primaryColor: Colors.blue,
       width: fdlsSmallComponentWidth,
       value: loadAvg,
-      onHoverBuilder: (context) => const LoadAvgHover(),
-      onTap: () => print("tapped"),
+      popup: const LoadAvgHover(),
       builder: (context, history) {
         return Stack(
           children: [

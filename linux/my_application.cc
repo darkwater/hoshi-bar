@@ -105,6 +105,16 @@ void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call, gpointe
     return;
   }
 
+  if (strcmp(method, "reset_input_regions") == 0) {
+    input_regions.clear();
+    apply_input_regions();
+
+    g_autoptr(FlMethodResponse) response = FL_METHOD_RESPONSE(
+        fl_method_success_response_new(fl_value_new_null()));
+    respond(method_call, response);
+    return;
+  }
+
   if (strcmp(method, "add_input_region") == 0) {
     int id = fl_value_get_int(fl_value_lookup_string(args, "id"));
     int x = fl_value_get_int(fl_value_lookup_string(args, "x"));

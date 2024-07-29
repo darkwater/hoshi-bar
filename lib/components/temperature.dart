@@ -50,8 +50,7 @@ class TemperatureComponent extends ConsumerWidget {
       primaryColor: Colors.orange,
       width: fdlsSmallComponentWidth,
       value: devs,
-      onHoverBuilder: (context) => const TemperatureHover(),
-      onTap: () => print("tapped"),
+      popup: const TemperatureHover(),
       builder: (context, history) {
         final hottest = history.seriesByMaxLast((v) => v);
 
