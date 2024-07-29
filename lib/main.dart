@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fdls/components/backlight.dart';
 import 'package:fdls/components/battery.dart';
 import 'package:fdls/components/clock.dart';
 import 'package:fdls/components/loadavg.dart';
@@ -81,6 +82,7 @@ class App extends ConsumerWidget {
                       NetworkComponent(),
                       LoadAvgComponent(),
                       TemperatureComponent(),
+                      BacklightComponent(),
                       BatteryComponent(),
                       ClockComponent(),
                     ],

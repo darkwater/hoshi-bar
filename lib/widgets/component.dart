@@ -61,7 +61,12 @@ class Component<T> extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Theme(
-              data: Theme.of(context).copyWith(primaryColor: primaryColor),
+              data: Theme.of(context).copyWith(
+                primaryColor: primaryColor,
+                colorScheme: Theme.of(context).colorScheme.copyWith(
+                      primary: primaryColor,
+                    ),
+              ),
               child: _Interactivity(
                 onTap: onTap,
                 popup: popup,

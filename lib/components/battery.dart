@@ -73,10 +73,7 @@ class BatteryComponent extends ConsumerWidget {
               bottom: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 clipBehavior: Clip.antiAlias,
-                child: LinearProgressIndicator(
-                  value: battery.capacity,
-                  valueColor: AlwaysStoppedAnimation<Color>(color),
-                ),
+                child: LinearProgressIndicator(value: battery.capacity),
               ),
             ),
           );

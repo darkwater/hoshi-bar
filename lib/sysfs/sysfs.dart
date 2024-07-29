@@ -6,8 +6,12 @@ abstract class SysfsClass {
 
   SysfsClass(this.id, this.klass);
 
+  File _file(String property) {
+    return File("/sys/class/$klass/$id/$property");
+  }
+
   String getString(String property) {
-    return File("/sys/class/$klass/$id/$property").readAsStringSync().trim();
+    return _file(property).readAsStringSync().trim();
   }
 
   int getInt(String property) {
@@ -28,6 +32,22 @@ abstract class SysfsClass {
     } catch (e) {
       return null;
     }
+  }
+
+  void setString(String property, String value) {
+    _file(property).writeAsStringSync(value);
+  }
+
+  void setInt(String property, int value) {
+    setString(property, value.toString());
+  }
+
+  void setDouble(String property, double value) {
+    setString(property, value.toString());
+  }
+
+  void setBool(String property, bool value) {
+    setString(property, value ? "1" : "0");
   }
 }
 
