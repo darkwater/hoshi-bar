@@ -29,6 +29,8 @@ linter:
 analyzer:
   plugins:
     - custom_lint
+  exclude:
+    - lib/dbus/**
 
 custom_lint:
   rules:

@@ -70,10 +70,9 @@ class BatteryComponent extends ConsumerWidget {
             child: TwoRow(
               top: Text("${(battery.capacity * 100).round()}%"),
               icon: Icon(icon),
-              bottom: ClipRRect(
+              bottom: LinearProgressIndicator(
+                value: battery.capacity,
                 borderRadius: BorderRadius.circular(10),
-                clipBehavior: Clip.antiAlias,
-                child: LinearProgressIndicator(value: battery.capacity),
               ),
             ),
           );

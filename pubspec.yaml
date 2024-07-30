@@ -21,6 +21,9 @@ version: 1.0.0+1
 environment:
   sdk: '>=3.3.2 <4.0.0'
 
+executables:
+  dart-dbus: dbus
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -42,6 +45,8 @@ dependencies:
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
   fl_chart: ^0.68.0
+  dbus: ^0.7.10
+
   hyprland_ipc:
     # path: ../hyprland_ipc
     git:

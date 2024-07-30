@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ComponentHoverPopup extends HookConsumerWidget {
+class ComponentHoverPopup extends ConsumerStatefulWidget {
   final IconData icon;
   final String title;
   final double? width;
   final double? height;
   final Widget? background;
   final List<Widget> underTitle;
+  final Widget? body;
 
   const ComponentHoverPopup({
     required this.icon,
@@ -19,32 +20,67 @@ class ComponentHoverPopup extends HookConsumerWidget {
     this.height = 200,
     this.background,
     this.underTitle = const [],
+    this.body,
     super.key,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final fadeCtrl = useAnimationController(
-      vsync: useSingleTickerProvider(),
+  ConsumerState<ComponentHoverPopup> createState() =>
+      _ComponentHoverPopupState();
+}
+
+class _ComponentHoverPopupState extends ConsumerState<ComponentHoverPopup>
+    with TickerProviderStateMixin {
+  late final AnimationController fadeCtrl;
+  late final Animation<double> fade;
+  late final AnimationController slideCtrl;
+  late final Animation<Offset> offset;
+
+  late final ScrollController scrollController;
+  bool scrolled = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    fadeCtrl = AnimationController(
+      vsync: this,
       duration: const Duration(milliseconds: 200),
-      initialValue: 0,
+      value: 0,
     );
 
-    final fade = Tween<double>(begin: 0, end: 1).animate(fadeCtrl);
+    fade = Tween<double>(begin: 0, end: 1).animate(fadeCtrl);
     fadeCtrl.forward();
 
-    final slideCtrl = useAnimationController(
-      vsync: useSingleTickerProvider(),
+    slideCtrl = AnimationController(
+      vsync: this,
       duration: const Duration(milliseconds: 200),
-      initialValue: 0,
+      value: 0,
     );
 
-    final offset = Tween<Offset>(begin: const Offset(0, 0.5), end: Offset.zero)
-        .animate(CurvedAnimation(
-            parent: slideCtrl, curve: Easing.standardDecelerate));
-
+    offset =
+        Tween<Offset>(begin: const Offset(0, 0.5), end: Offset.zero).animate(
+      CurvedAnimation(parent: slideCtrl, curve: Curves.easeInOutCubic),
+    );
     slideCtrl.forward();
 
+    scrollController = ScrollController();
+    scrollController.addListener(() {
+      print('scrollController.addListener');
+      if (scrollController.positions.isNotEmpty &&
+          scrollController.offset > 0 &&
+          !scrolled) {
+        setState(() => scrolled = true);
+      } else if (scrollController.positions.isNotEmpty &&
+          scrollController.offset == 0 &&
+          scrolled) {
+        setState(() => scrolled = false);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final expanded = ref.watch(popupExpandedProvider);
 
     return SlideTransition(
@@ -62,32 +98,52 @@ class ComponentHoverPopup extends HookConsumerWidget {
           ),
           child: Stack(
             children: [
-              if (background != null) background!,
+              if (widget.background != null) widget.background!,
               if (expanded)
-                Positioned(
-                  left: 14,
-                  top: 14,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
+                Positioned.fill(
+                  child: Column(
                     children: [
-                      Icon(
-                        icon,
-                        size: 24,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      const SizedBox(width: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: Theme.of(context).textTheme.titleMedium,
+                      Material(
+                        animationDuration: const Duration(milliseconds: 0),
+                        color: scrolled
+                            ? fdlsBackgroundColor.withOpacity(1)
+                            : Colors.transparent,
+                        elevation: scrolled ? 2 : 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(14),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(
+                                widget.icon,
+                                size: 24,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              const SizedBox(width: 8),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.title,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  ...widget.underTitle,
+                                ],
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 4),
-                          ...underTitle,
-                        ],
+                        ),
                       ),
+                      if (widget.body != null)
+                        Expanded(
+                          child: PrimaryScrollController(
+                            controller: scrollController,
+                            child: widget.body!,
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -96,5 +152,14 @@ class ComponentHoverPopup extends HookConsumerWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    fadeCtrl.dispose();
+    slideCtrl.dispose();
+    scrollController.dispose();
+
+    super.dispose();
   }
 }
