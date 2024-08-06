@@ -5,5 +5,7 @@ import 'dart:io';
 import 'package:dbus/dbus.dart';
 
 class OrgBluezGattService1 extends DBusRemoteObject {
-  OrgBluezGattService1(DBusClient client, String destination, DBusObjectPath path) : super(client, name: destination, path: path);
+  OrgBluezGattService1(
+      DBusClient client, String destination, DBusObjectPath path)
+      : super(client, name: destination, path: path);
 }

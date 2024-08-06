@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fdls/components/audio.dart';
 import 'package:fdls/components/backlight.dart';
 import 'package:fdls/components/battery.dart';
 import 'package:fdls/components/bluetooth.dart';
@@ -10,6 +11,7 @@ import 'package:fdls/components/temperature.dart';
 import 'package:fdls/components/workspaces.dart';
 import 'package:fdls/constants.dart';
 import 'package:fdls/providers/popup.dart';
+import 'package:fdls/src/rust/frb_generated.dart';
 import 'package:fdls/widgets/input_region.dart';
 import 'package:fdls/widgets/render_rect_listener.dart';
 import 'package:fdls/providers/theme.dart';
@@ -19,6 +21,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await RustLib.init();
 
   const MethodChannel("fdls").invokeMethod("reset_input_regions");
 
@@ -39,6 +42,9 @@ class App extends ConsumerWidget {
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: ref.watch(themeColorProvider),
           brightness: Brightness.dark,
+        ),
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          linearTrackColor: Colors.grey.withOpacity(0.2),
         ),
       ),
       home: RenderRectListener(
@@ -83,6 +89,7 @@ class App extends ConsumerWidget {
                       NetworkComponent(),
                       LoadAvgComponent(),
                       TemperatureComponent(),
+                      AudioComponent(),
                       BluetoothComponent(),
                       BacklightComponent(),
                       BatteryComponent(),

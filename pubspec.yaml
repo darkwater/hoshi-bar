@@ -52,6 +52,9 @@ dependencies:
     git:
       url: https://github.com/darkwater/hyprland_ipc.git
       ref: main
+  rust_lib_fdls:
+    path: rust_builder
+  flutter_rust_bridge: 2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +72,8 @@ dev_dependencies:
   riverpod_lint: ^2.3.10
   freezed: ^2.5.2
   json_serializable: ^6.8.0
+  integration_test:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
