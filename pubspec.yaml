@@ -47,14 +47,20 @@ dependencies:
   fl_chart: ^0.68.0
   dbus: ^0.7.10
 
+  wayland_shell:
+    git:
+      url: https://github.com/FlafyDev/wayland_shell.git
+      ref: main
+
   hyprland_ipc:
     # path: ../hyprland_ipc
     git:
       url: https://github.com/darkwater/hyprland_ipc.git
       ref: main
+
+  flutter_rust_bridge: 2.1.0
   rust_lib_fdls:
     path: rust_builder
-  flutter_rust_bridge: 2.1.0
 
 dev_dependencies:
   flutter_test:

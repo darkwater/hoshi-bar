@@ -1,7 +1,7 @@
 import 'package:fdls/constants.dart';
-import 'package:fdls/widgets/render_rect_listener.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:wayland_shell/wayland_shell.dart';
 
 class SimpleGraph<T> extends StatefulWidget {
   final double minY;
@@ -24,10 +24,13 @@ class _SimpleGraphState<T> extends State<SimpleGraph<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return RenderRectListener(
-      listener: (rect) {
+    return GlobalRect(
+      onChange: (rect) {
         if (rect.width == width) return;
-        setState(() => width = rect.width);
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          setState(() => width = rect.width);
+        });
       },
       child: LineChart(
         LineChartData(

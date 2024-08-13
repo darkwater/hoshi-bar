@@ -1,8 +1,8 @@
 import 'package:fdls/constants.dart';
 import 'package:fdls/providers/popup.dart';
-import 'package:fdls/widgets/input_region.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:wayland_shell/wayland_shell.dart';
 
 class Component<T> extends StatelessWidget {
   final Color primaryColor;

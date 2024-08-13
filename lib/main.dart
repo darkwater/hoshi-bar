@@ -12,18 +12,17 @@ import 'package:fdls/components/workspaces.dart';
 import 'package:fdls/constants.dart';
 import 'package:fdls/providers/popup.dart';
 import 'package:fdls/src/rust/frb_generated.dart';
-import 'package:fdls/widgets/input_region.dart';
-import 'package:fdls/widgets/render_rect_listener.dart';
 import 'package:fdls/providers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:wayland_shell/wayland_shell.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await RustLib.init();
 
-  const MethodChannel("fdls").invokeMethod("reset_input_regions");
+  await WaylandShell.clearInputRegions();
 
   runApp(const ProviderScope(child: App()));
 }
@@ -47,9 +46,9 @@ class App extends ConsumerWidget {
           linearTrackColor: Colors.grey.withOpacity(0.2),
         ),
       ),
-      home: RenderRectListener(
-        listener: (rect) {
-          ref.read(screenSizeProvider.notifier).state = rect.size;
+      home: GlobalRect(
+        onChange: (rect) {
+          Future(() => ref.read(screenSizeProvider.notifier).state = rect.size);
         },
         child: Stack(
           children: [
@@ -71,9 +70,11 @@ class App extends ConsumerWidget {
               bottom: 0,
               right: 0,
               height: fdlsBarHeight,
-              child: RenderRectListener(
-                listener: (box) {
-                  ref.read(barWidthProvider.notifier).state = box.size.width;
+              child: GlobalRect(
+                onChange: (box) {
+                  Future(() {
+                    ref.read(barWidthProvider.notifier).state = box.size.width;
+                  });
 
                   print("setting exclusive zone height to ${box.size.height}");
                   const MethodChannel("fdls").invokeMethod("set_exclusive_zone",
