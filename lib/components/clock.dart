@@ -33,13 +33,13 @@ Stream<DateTime> clockStream(ClockStreamRef ref) async* {
   while (true) {
     if (frequency == UpdateFrequency.second) {
       await Future.delayed(
-        Duration(milliseconds: 999 - DateTime.now().millisecond),
+        Duration(milliseconds: 1000 - DateTime.now().millisecond),
       );
     } else {
       await Future.delayed(
         Duration(
           seconds: 59 - DateTime.now().second,
-          milliseconds: 999 - DateTime.now().millisecond,
+          milliseconds: 1000 - DateTime.now().millisecond,
         ),
       );
     }
