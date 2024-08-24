@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fdls/components/audio.dart';
 import 'package:fdls/components/backlight.dart';
 import 'package:fdls/components/battery.dart';
 import 'package:fdls/components/bluetooth.dart';
@@ -11,7 +10,6 @@ import 'package:fdls/components/temperature.dart';
 import 'package:fdls/components/workspaces.dart';
 import 'package:fdls/constants.dart';
 import 'package:fdls/providers/popup.dart';
-import 'package:fdls/src/rust/frb_generated.dart';
 import 'package:fdls/providers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +18,6 @@ import 'package:wayland_shell/wayland_shell.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await RustLib.init();
 
   await WaylandShell.clearInputRegions();
 
@@ -41,9 +38,6 @@ class App extends ConsumerWidget {
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: ref.watch(themeColorProvider),
           brightness: Brightness.dark,
-        ),
-        progressIndicatorTheme: ProgressIndicatorThemeData(
-          linearTrackColor: Colors.grey.withOpacity(0.2),
         ),
       ),
       home: GlobalRect(
@@ -90,7 +84,6 @@ class App extends ConsumerWidget {
                       NetworkComponent(),
                       LoadAvgComponent(),
                       TemperatureComponent(),
-                      AudioComponent(),
                       BluetoothComponent(),
                       BacklightComponent(),
                       BatteryComponent(),

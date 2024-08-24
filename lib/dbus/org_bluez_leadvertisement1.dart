@@ -5,17 +5,10 @@ import 'dart:io';
 import 'package:dbus/dbus.dart';
 
 class OrgBluezLEAdvertisement1 extends DBusRemoteObject {
-  OrgBluezLEAdvertisement1(
-      DBusClient client, String destination, DBusObjectPath path)
-      : super(client, name: destination, path: path);
+  OrgBluezLEAdvertisement1(DBusClient client, String destination, DBusObjectPath path) : super(client, name: destination, path: path);
 
   /// Invokes org.bluez.LEAdvertisement1.Release()
-  Future<void> callRelease(
-      {bool noAutoStart = false,
-      bool allowInteractiveAuthorization = false}) async {
-    await callMethod('org.bluez.LEAdvertisement1', 'Release', [],
-        replySignature: DBusSignature(''),
-        noAutoStart: noAutoStart,
-        allowInteractiveAuthorization: allowInteractiveAuthorization);
+  Future<void> callRelease({bool noAutoStart = false, bool allowInteractiveAuthorization = false}) async {
+    await callMethod('org.bluez.LEAdvertisement1', 'Release', [], replySignature: DBusSignature(''), noAutoStart: noAutoStart, allowInteractiveAuthorization: allowInteractiveAuthorization);
   }
 }

@@ -1,10 +1,9 @@
-import 'package:fdls/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 
 class History<K, V> {
   Map<K, Series<K, V>> series = {};
-  Duration keepHistory = fdlsDefaultKeepHistory;
+  Duration keepHistory = const Duration(minutes: 10);
 
   Series<K, V> operator [](K key) => getSeries(key);
 

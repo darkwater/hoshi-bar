@@ -5,13 +5,11 @@ import 'dart:io';
 import 'package:dbus/dbus.dart';
 
 class OrgBluezBattery1 extends DBusRemoteObject {
-  OrgBluezBattery1(DBusClient client, String destination, DBusObjectPath path)
-      : super(client, name: destination, path: path);
+  OrgBluezBattery1(DBusClient client, String destination, DBusObjectPath path) : super(client, name: destination, path: path);
 
   /// Gets org.bluez.Battery1.Percentage
   Future<int> getPercentage() async {
-    var value = await getProperty('org.bluez.Battery1', 'Percentage',
-        signature: DBusSignature('y'));
+    var value = await getProperty('org.bluez.Battery1', 'Percentage', signature: DBusSignature('y'));
     return value.asByte();
   }
 }
