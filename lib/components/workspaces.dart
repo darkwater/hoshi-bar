@@ -18,8 +18,7 @@ Stream<List<Workspace>> workspaces(WorkspacesRef ref) async* {
 
   yield await getWorkspaces(hypr);
 
-  await for (final event in hypr.eventsStream) {
-    print(event);
+  await for (final _ in hypr.eventsStream) {
     yield await getWorkspaces(hypr);
   }
 }

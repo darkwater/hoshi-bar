@@ -20,7 +20,7 @@ final hyprlandProvider = FutureProvider<HyprlandIPC>.internal(
 );
 
 typedef HyprlandRef = FutureProviderRef<HyprlandIPC>;
-String _$workspacesHash() => r'8770d6fb27dfa1d62dde4de9d5cb959bface6cf6';
+String _$workspacesHash() => r'da11754cc0ed6dd12602a724b251789c165fd6ff';
 
 /// See also [workspaces].
 @ProviderFor(workspaces)

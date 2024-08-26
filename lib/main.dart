@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fdls/components/audio.dart';
 import 'package:fdls/components/backlight.dart';
 import 'package:fdls/components/battery.dart';
 import 'package:fdls/components/bluetooth.dart';
@@ -25,6 +26,7 @@ Future<void> main() async {
 }
 
 final barWidthProvider = StateProvider<double>((ref) => 0);
+int _barHeight = 0;
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -38,6 +40,9 @@ class App extends ConsumerWidget {
         colorScheme: ColorScheme.fromSwatch(
           primarySwatch: ref.watch(themeColorProvider),
           brightness: Brightness.dark,
+        ),
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          linearTrackColor: Colors.grey.withOpacity(0.2),
         ),
       ),
       home: GlobalRect(
@@ -70,9 +75,14 @@ class App extends ConsumerWidget {
                     ref.read(barWidthProvider.notifier).state = box.size.width;
                   });
 
-                  print("setting exclusive zone height to ${box.size.height}");
-                  const MethodChannel("fdls").invokeMethod("set_exclusive_zone",
-                      {"height": box.size.height.toInt()});
+                  final height = (box.size.height - 20).toInt();
+
+                  if (_barHeight != height) {
+                    _barHeight = height;
+                    print("setting exclusive zone height to $height");
+                    const MethodChannel("fdls").invokeMethod(
+                        "set_exclusive_zone", {"height": height.toInt()});
+                  }
                 },
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
@@ -84,6 +94,7 @@ class App extends ConsumerWidget {
                       NetworkComponent(),
                       LoadAvgComponent(),
                       TemperatureComponent(),
+                      AudioComponent(),
                       BluetoothComponent(),
                       BacklightComponent(),
                       BatteryComponent(),

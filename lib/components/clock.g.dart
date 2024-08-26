@@ -37,7 +37,7 @@ final clockUpdateFrequencyProvider =
 );
 
 typedef ClockUpdateFrequencyRef = AutoDisposeProviderRef<UpdateFrequency>;
-String _$clockStreamHash() => r'1f88ca2339f9b0298f3bfbc66088be58dd19d478';
+String _$clockStreamHash() => r'a9d86a3df48c618637097e0a1ab572a0d7804bc3';
 
 /// See also [clockStream].
 @ProviderFor(clockStream)

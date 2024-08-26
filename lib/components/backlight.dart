@@ -52,6 +52,7 @@ class BacklightComponent extends ConsumerWidget {
             primaryColor: Colors.yellow,
             width: fdlsSmallComponentWidth,
             child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onHorizontalDragUpdate: (details) {
                 // TODO: use dbus instead
                 // https://github.com/Alexays/Waybar/blob/master/src/util/backlight_backend.cpp#L266
