@@ -42,7 +42,7 @@ class App extends ConsumerWidget {
           brightness: Brightness.dark,
         ),
         progressIndicatorTheme: ProgressIndicatorThemeData(
-          linearTrackColor: Colors.grey.withOpacity(0.2),
+          linearTrackColor: Colors.grey.shade800,
         ),
       ),
       home: GlobalRect(

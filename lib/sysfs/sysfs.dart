@@ -10,43 +10,43 @@ abstract class SysfsClass {
     return File("/sys/class/$klass/$id/$property");
   }
 
-  String getString(String property) {
-    return _file(property).readAsStringSync().trim();
+  Future<String> getString(String property) async {
+    return (await _file(property).readAsString()).trim();
   }
 
-  int getInt(String property) {
-    return int.parse(getString(property));
+  Future<int> getInt(String property) async {
+    return int.parse(await getString(property));
   }
 
-  double getDouble(String property) {
-    return double.parse(getString(property));
+  Future<double> getDouble(String property) async {
+    return double.parse(await getString(property));
   }
 
-  bool getBool(String property) {
-    return getString(property) == "1";
+  Future<bool> getBool(String property) async {
+    return await getString(property) == "1";
   }
 
-  T? optional<T>(T Function() f) {
+  Future<T?> optional<T>(Future<T> Function() f) async {
     try {
-      return f();
+      return await f();
     } catch (e) {
       return null;
     }
   }
 
-  void setString(String property, String value) {
-    _file(property).writeAsStringSync(value);
+  Future<void> setString(String property, String value) async {
+    _file(property).writeAsString(value);
   }
 
-  void setInt(String property, int value) {
+  Future<void> setInt(String property, int value) async {
     setString(property, value.toString());
   }
 
-  void setDouble(String property, double value) {
+  Future<void> setDouble(String property, double value) async {
     setString(property, value.toString());
   }
 
-  void setBool(String property, bool value) {
+  Future<void> setBool(String property, bool value) async {
     setString(property, value ? "1" : "0");
   }
 }

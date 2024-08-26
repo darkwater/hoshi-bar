@@ -10,6 +10,7 @@ class Component<T> extends StatelessWidget {
   final BorderSide border;
   final Function()? onTap;
   final Widget? popup;
+  final Clip clipBehavior;
   final Widget child;
 
   const Component({
@@ -18,6 +19,7 @@ class Component<T> extends StatelessWidget {
     this.border = BorderSide.none,
     this.onTap,
     this.popup,
+    this.clipBehavior = Clip.antiAlias,
     required this.child,
     super.key,
   });
@@ -30,6 +32,7 @@ class Component<T> extends StatelessWidget {
     this.border = BorderSide.none,
     this.onTap,
     this.popup,
+    this.clipBehavior = Clip.antiAlias,
     super.key,
   }) : child = Builder(
           builder: (context) => value.when(
@@ -55,7 +58,7 @@ class Component<T> extends StatelessWidget {
           child: Material(
             color: fdlsBackgroundColor,
             shadowColor: Colors.transparent,
-            clipBehavior: Clip.antiAlias,
+            clipBehavior: clipBehavior,
             shape: RoundedRectangleBorder(
               side: border,
               borderRadius: BorderRadius.circular(8),

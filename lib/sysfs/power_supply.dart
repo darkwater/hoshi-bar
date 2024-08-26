@@ -9,7 +9,8 @@ class SysfsPowerSupply extends SysfsClass {
           .map((e) => SysfsPowerSupply._(e, _klass))
           .toList();
 
-  SysfsPowerSupplyType get type => switch (getString("type")) {
+  Future<SysfsPowerSupplyType> get type async =>
+      switch (await getString("type")) {
         "Battery" => SysfsPowerSupplyType.battery,
         "UPS" => SysfsPowerSupplyType.ups,
         "Mains" => SysfsPowerSupplyType.mains,
@@ -18,7 +19,8 @@ class SysfsPowerSupply extends SysfsClass {
         final other => throw "Unknown power supply type: $other",
       };
 
-  SysfsPowerSupplyStatus get status => switch (getString("status")) {
+  Future<SysfsPowerSupplyStatus> get status async =>
+      switch (await getString("status")) {
         "Charging" => SysfsPowerSupplyStatus.charging,
         "Discharging" => SysfsPowerSupplyStatus.discharging,
         "Not charging" => SysfsPowerSupplyStatus.notCharging,
@@ -26,7 +28,7 @@ class SysfsPowerSupply extends SysfsClass {
         final other => throw "Unknown power supply status: $other",
       };
 
-  double get capacity => getInt("capacity") / 100;
+  Future<double> get capacity async => (await getInt("capacity")) / 100;
 
   @override
   String toString() {

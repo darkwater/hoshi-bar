@@ -7,7 +7,7 @@ part of 'network.dart';
 // **************************************************************************
 
 String _$networkUsageStreamHash() =>
-    r'cc861eaf0171e0bb54505a06f8b476fee9b9ae5c';
+    r'3b8582f2ed16edf1e69c3d2ca72790d69e715cf4';
 
 /// See also [networkUsageStream].
 @ProviderFor(networkUsageStream)

@@ -42,8 +42,8 @@ Stream<History<String, NetworkUsage>> networkUsageStream(
     var totalTx = 0;
 
     for (final dev in devices) {
-      final nowRx = dev.rxBytes;
-      final nowTx = dev.txBytes;
+      final nowRx = await dev.rxBytes;
+      final nowTx = await dev.txBytes;
 
       totalRx += nowRx;
       totalTx += nowTx;

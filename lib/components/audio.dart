@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:fdls/constants.dart';
 import 'package:fdls/widgets/component.dart';
+import 'package:fdls/widgets/slider.dart';
 import 'package:fdls/widgets/two_row.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,7 +15,7 @@ part 'audio.g.dart';
 Stream<PipewireStatus> pipewireStatus(PipewireStatusRef ref) async* {
   final pwdump = await Process.start("pw-dump", ["-m"]);
   final events = pwdump.stdout
-      .transform(const Utf8Decoder())
+      .transform(const AsciiDecoder(allowInvalid: true))
       .transform(const LineSplitter())
       .where((line) => line == "[")
       .asBroadcastStream();
@@ -34,47 +34,29 @@ PipewireSink? defaultSink(DefaultSinkRef ref) {
   return status.valueOrNull?.defaultSink;
 }
 
-class AudioComponent extends HookConsumerWidget {
+class AudioComponent extends ConsumerWidget {
   const AudioComponent({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final slider = useState<double>(0);
-
     final sink = ref.watch(defaultSinkProvider);
     final volume = sink?.volume;
 
     return Component(
       primaryColor: Colors.green,
       width: fdlsSmallComponentWidth,
+      clipBehavior: Clip.none,
       child: volume != null
-          ? GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onHorizontalDragStart: (details) {
-                slider.value = volume;
-              },
-              onHorizontalDragUpdate: (details) {
-                final newValue = (slider.value + details.primaryDelta! / 200)
-                    .clamp(0.0, 1.0);
-
-                if (newValue != slider.value) {
-                  slider.value = newValue;
-                  print(newValue);
-                  Process.run("wpctl",
-                      ["set-volume", sink!.id.toString(), newValue.toString()]);
-                }
-              },
-              child: TwoRow(
-                top: Text("${(volume * 100).round()}%"),
-                icon: const Icon(Icons.volume_up),
-                bottom: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  clipBehavior: Clip.antiAlias,
-                  child: LinearProgressIndicator(
-                    value: volume,
-                  ),
-                ),
+          ? BarSlider(
+              value: volume,
+              builder: (context, volume) => (
+                const Icon(Icons.volume_up),
+                Text("${(volume * 100).round()}%"),
               ),
+              onChanged: (volume) {
+                Process.run("wpctl",
+                    ["set-volume", sink!.id.toString(), volume.toString()]);
+              },
             )
           : TwoRow(
               top: const Text("??"),

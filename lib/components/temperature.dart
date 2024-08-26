@@ -15,15 +15,20 @@ part 'temperature.g.dart';
 part 'temperature.freezed.dart';
 
 @riverpod
-Stream<History<SysfsHwmon, double>> temperatureStream(
+Stream<History<(SysfsHwmon, String), double>> temperatureStream(
     TemperatureStreamRef ref) async* {
-  final sensors = (await SysfsHwmon.list()).where((e) => e.maxTemp != null);
+  final sensors = <(SysfsHwmon, String)>[];
+  for (final sensor in await SysfsHwmon.list()) {
+    if (await sensor.maxTemp != null) {
+      sensors.add((sensor, await sensor.name));
+    }
+  }
 
-  final history = History<SysfsHwmon, double>();
+  final history = History<(SysfsHwmon, String), double>();
 
   while (true) {
     for (final sensor in sensors) {
-      history.addValue(sensor, sensor.maxTemp!);
+      history.addValue(sensor, (await sensor.$1.maxTemp)!);
     }
 
     yield history;
@@ -64,7 +69,7 @@ class TemperatureComponent extends ConsumerWidget {
                 icon: const Icon(Icons.thermostat),
                 top: Text("${hottest.lastValue!.round()}°C"),
                 bottom: Text(
-                  hottest.key.name,
+                  hottest.key.$2,
                   softWrap: false,
                   overflow: TextOverflow.clip,
                 ),
@@ -78,8 +83,8 @@ class TemperatureComponent extends ConsumerWidget {
 }
 
 class _TemperatureGraph extends StatelessWidget {
-  final History<SysfsHwmon, double>? history;
-  final Series<SysfsHwmon, double>? hottest;
+  final History<(SysfsHwmon, String), double>? history;
+  final Series<(SysfsHwmon, String), double>? hottest;
 
   const _TemperatureGraph({
     this.history,
@@ -138,7 +143,7 @@ class TemperatureHover extends ConsumerWidget {
       underTitle: [
         for (final entry in history.series.entries)
           Text(
-            "${entry.key.name}:  ${entry.value.lastValue!.round()}°C",
+            "${entry.key.$2}:  ${entry.value.lastValue!.round()}°C",
           ),
       ],
       background: _TemperatureGraph(history: history),

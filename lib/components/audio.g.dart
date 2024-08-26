@@ -6,7 +6,7 @@ part of 'audio.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pipewireStatusHash() => r'a8526ad024e626ef94bdd41a5f6351c9ee12a148';
+String _$pipewireStatusHash() => r'b7dbf852c5b5f5c31c47e819b2b9b5b03b4af85f';
 
 /// See also [pipewireStatus].
 @ProviderFor(pipewireStatus)

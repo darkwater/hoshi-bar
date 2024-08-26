@@ -15,14 +15,17 @@ Stream<List<Backlight>> backlightStream(BacklightStreamRef ref) async* {
   final backlights = await SysfsBacklight.list();
 
   while (true) {
-    yield backlights
-        .map((e) => Backlight(
-              sysfs: e,
-              brightness: e.brightness,
-              brightnessFraction: e.brightnessFraction,
-              maxBrightness: e.maxBrightness,
-            ))
-        .toList();
+    final out = <Backlight>[];
+    for (final backlight in backlights) {
+      out.add(Backlight(
+        sysfs: backlight,
+        brightness: await backlight.brightness,
+        brightnessFraction: await backlight.brightnessFraction,
+        maxBrightness: await backlight.maxBrightness,
+      ));
+    }
+
+    yield out;
 
     await Future.delayed(fdlsUpdateFrequency);
   }
@@ -53,18 +56,20 @@ class BacklightComponent extends ConsumerWidget {
             width: fdlsSmallComponentWidth,
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onHorizontalDragUpdate: (details) {
+              onHorizontalDragUpdate: (details) async {
                 // TODO: use dbus instead
                 // https://github.com/Alexays/Waybar/blob/master/src/util/backlight_backend.cpp#L266
 
                 final delta = details.primaryDelta! / 100;
                 final newBrightness =
-                    (backlight.sysfs.brightnessFraction + delta).clamp(0, 1);
+                    (await backlight.sysfs.brightnessFraction + delta)
+                        .clamp(0, 1);
 
                 print(delta);
 
-                backlight.sysfs.brightness =
-                    (newBrightness * backlight.maxBrightness).round();
+                backlight.sysfs.setBrightness(
+                  (newBrightness * backlight.maxBrightness).round(),
+                );
 
                 ref.invalidate(backlightStreamProvider);
               },

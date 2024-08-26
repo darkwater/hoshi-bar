@@ -8,13 +8,15 @@ class SysfsHwmon extends SysfsClass {
       .map((e) => SysfsHwmon._(e, _klass))
       .toList();
 
-  String get name => getString("name");
-  double? tempInput(int n) => optional(() => getInt("temp${n}_input") / 1000);
+  Future<String> get name => getString("name");
+  Future<double?> tempInput(int n) => optional(
+        () async => (await getInt("temp${n}_input")) / 1000,
+      );
 
-  List<double>? get temps {
+  Future<List<double>?> get temps async {
     final temps = <double>[];
     for (var i = 1; i < 10; i++) {
-      final temp = tempInput(i);
+      final temp = await tempInput(i);
       if (temp == null) break;
       temps.add(temp);
     }
@@ -22,14 +24,14 @@ class SysfsHwmon extends SysfsClass {
     return temps;
   }
 
-  double? get avgTemp {
-    final temps = this.temps;
+  Future<double?> get avgTemp async {
+    final temps = await this.temps;
     if (temps == null) return null;
     return temps.reduce((a, b) => a + b) / temps.length;
   }
 
-  double? get maxTemp {
-    final temps = this.temps;
+  Future<double?> get maxTemp async {
+    final temps = await this.temps;
     if (temps == null) return null;
     return temps.reduce((a, b) => a > b ? a : b);
   }

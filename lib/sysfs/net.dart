@@ -7,8 +7,8 @@ class SysfsNet extends SysfsClass {
   static Future<List<SysfsNet>> list() async =>
       (await listSysfsNames(_klass)).map((e) => SysfsNet._(e, _klass)).toList();
 
-  int get rxBytes => getInt("statistics/rx_bytes");
-  int get txBytes => getInt("statistics/tx_bytes");
+  Future<int> get rxBytes => getInt("statistics/rx_bytes");
+  Future<int> get txBytes => getInt("statistics/tx_bytes");
 
   @override
   String toString() {
