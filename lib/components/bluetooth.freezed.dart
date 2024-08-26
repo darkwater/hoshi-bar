@@ -421,7 +421,7 @@ abstract class _BluetoothAdapter extends BluetoothAdapter {
 mixin _$BluetoothDevice {
   DBusObjectPath get objectPath => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
   String? get icon => throw _privateConstructorUsedError;
   bool get paired => throw _privateConstructorUsedError;
   bool get connected => throw _privateConstructorUsedError;
@@ -440,7 +440,7 @@ abstract class $BluetoothDeviceCopyWith<$Res> {
   $Res call(
       {DBusObjectPath objectPath,
       String address,
-      String name,
+      String? name,
       String? icon,
       bool paired,
       bool connected});
@@ -461,7 +461,7 @@ class _$BluetoothDeviceCopyWithImpl<$Res, $Val extends BluetoothDevice>
   $Res call({
     Object? objectPath = null,
     Object? address = null,
-    Object? name = null,
+    Object? name = freezed,
     Object? icon = freezed,
     Object? paired = null,
     Object? connected = null,
@@ -475,10 +475,10 @@ class _$BluetoothDeviceCopyWithImpl<$Res, $Val extends BluetoothDevice>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       icon: freezed == icon
           ? _value.icon
           : icon // ignore: cast_nullable_to_non_nullable
@@ -506,7 +506,7 @@ abstract class _$$BluetoothDeviceImplCopyWith<$Res>
   $Res call(
       {DBusObjectPath objectPath,
       String address,
-      String name,
+      String? name,
       String? icon,
       bool paired,
       bool connected});
@@ -525,7 +525,7 @@ class __$$BluetoothDeviceImplCopyWithImpl<$Res>
   $Res call({
     Object? objectPath = null,
     Object? address = null,
-    Object? name = null,
+    Object? name = freezed,
     Object? icon = freezed,
     Object? paired = null,
     Object? connected = null,
@@ -539,10 +539,10 @@ class __$$BluetoothDeviceImplCopyWithImpl<$Res>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
-      name: null == name
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       icon: freezed == icon
           ? _value.icon
           : icon // ignore: cast_nullable_to_non_nullable
@@ -576,7 +576,7 @@ class _$BluetoothDeviceImpl extends _BluetoothDevice {
   @override
   final String address;
   @override
-  final String name;
+  final String? name;
   @override
   final String? icon;
   @override
@@ -620,7 +620,7 @@ abstract class _BluetoothDevice extends BluetoothDevice {
   const factory _BluetoothDevice(
       {required final DBusObjectPath objectPath,
       required final String address,
-      required final String name,
+      required final String? name,
       required final String? icon,
       required final bool paired,
       required final bool connected}) = _$BluetoothDeviceImpl;
@@ -631,7 +631,7 @@ abstract class _BluetoothDevice extends BluetoothDevice {
   @override
   String get address;
   @override
-  String get name;
+  String? get name;
   @override
   String? get icon;
   @override
