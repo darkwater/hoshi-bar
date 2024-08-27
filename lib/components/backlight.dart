@@ -1,6 +1,7 @@
 import 'package:fdls/constants.dart';
 import 'package:fdls/sysfs/backlight.dart';
 import 'package:fdls/widgets/component.dart';
+import 'package:fdls/widgets/slider.dart';
 import 'package:fdls/widgets/two_row.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -54,18 +55,10 @@ class BacklightComponent extends ConsumerWidget {
           return Component(
             primaryColor: Colors.yellow,
             width: fdlsSmallComponentWidth,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onHorizontalDragUpdate: (details) async {
+            child: BarSlider(
+              onChanged: (newBrightness) async {
                 // TODO: use dbus instead
                 // https://github.com/Alexays/Waybar/blob/master/src/util/backlight_backend.cpp#L266
-
-                final delta = details.primaryDelta! / 100;
-                final newBrightness =
-                    (await backlight.sysfs.brightnessFraction + delta)
-                        .clamp(0, 1);
-
-                print(delta);
 
                 backlight.sysfs.setBrightness(
                   (newBrightness * backlight.maxBrightness).round(),
@@ -73,16 +66,10 @@ class BacklightComponent extends ConsumerWidget {
 
                 ref.invalidate(backlightStreamProvider);
               },
-              child: TwoRow(
-                top: Text("${(backlight.brightnessFraction * 100).round()}%"),
-                icon: const Icon(Icons.light_mode),
-                bottom: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  clipBehavior: Clip.antiAlias,
-                  child: LinearProgressIndicator(
-                    value: backlight.brightnessFraction,
-                  ),
-                ),
+              value: backlight.brightnessFraction,
+              builder: (context, brightness) => (
+                const Icon(Icons.light_mode),
+                Text("${(brightness * 100).round()}%"),
               ),
             ),
           );
