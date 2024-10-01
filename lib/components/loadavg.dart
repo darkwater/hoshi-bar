@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:fdls/constants.dart';
-import 'package:fdls/utils/history.dart';
-import 'package:fdls/widgets/component.dart';
-import 'package:fdls/widgets/component_hover_popup.dart';
-import 'package:fdls/widgets/simple_graph.dart';
-import 'package:fdls/widgets/two_row.dart';
+import 'package:hoshi_bar/constants.dart';
+import 'package:hoshi_bar/utils/history.dart';
+import 'package:hoshi_bar/widgets/component.dart';
+import 'package:hoshi_bar/widgets/component_hover_popup.dart';
+import 'package:hoshi_bar/widgets/simple_graph.dart';
+import 'package:hoshi_bar/widgets/two_row.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -40,7 +40,7 @@ Stream<History<void, LoadAvg>> loadAvgStream(LoadAvgStreamRef ref) async* {
 
     yield history;
 
-    await Future.delayed(fdlsUpdateFrequency);
+    await Future.delayed(hbUpdateFrequency);
   }
 }
 
@@ -66,7 +66,7 @@ class LoadAvgComponent extends ConsumerWidget {
 
     return Component.asyncValue(
       primaryColor: Colors.blue,
-      width: fdlsSmallComponentWidth,
+      width: hbSmallComponentWidth,
       value: loadAvg,
       popup: const LoadAvgHover(),
       builder: (context, history) {

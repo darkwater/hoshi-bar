@@ -1,10 +1,10 @@
 import 'package:dbus/dbus.dart';
-import 'package:fdls/constants.dart';
-import 'package:fdls/dbus/org_bluez_device1.dart';
-import 'package:fdls/dbus/org_freedesktop_dbus_objectmanager.dart';
-import 'package:fdls/widgets/component.dart';
-import 'package:fdls/widgets/component_hover_popup.dart';
-import 'package:fdls/widgets/two_row.dart';
+import 'package:hoshi_bar/constants.dart';
+import 'package:hoshi_bar/dbus/org_bluez_device1.dart';
+import 'package:hoshi_bar/dbus/org_freedesktop_dbus_objectmanager.dart';
+import 'package:hoshi_bar/widgets/component.dart';
+import 'package:hoshi_bar/widgets/component_hover_popup.dart';
+import 'package:hoshi_bar/widgets/two_row.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -64,7 +64,7 @@ Stream<Bluetooth> bluetoothStream(BluetoothStreamRef ref) async* {
       print(e);
     }
 
-    await Future.delayed(fdlsUpdateFrequency);
+    await Future.delayed(hbUpdateFrequency);
   }
 }
 
@@ -83,7 +83,7 @@ class BluetoothComponent extends ConsumerWidget {
 
     return Component.asyncValue(
       primaryColor: Colors.blue,
-      width: fdlsSmallComponentWidth,
+      width: hbSmallComponentWidth,
       value: bluetooth,
       popup: const BluetoothHover(),
       builder: (context, history) {

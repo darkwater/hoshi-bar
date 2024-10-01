@@ -1,8 +1,8 @@
-import 'package:fdls/constants.dart';
-import 'package:fdls/sysfs/backlight.dart';
-import 'package:fdls/widgets/component.dart';
-import 'package:fdls/widgets/slider.dart';
-import 'package:fdls/widgets/two_row.dart';
+import 'package:hoshi_bar/constants.dart';
+import 'package:hoshi_bar/sysfs/backlight.dart';
+import 'package:hoshi_bar/widgets/component.dart';
+import 'package:hoshi_bar/widgets/slider.dart';
+import 'package:hoshi_bar/widgets/two_row.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -28,7 +28,7 @@ Stream<List<Backlight>> backlightStream(BacklightStreamRef ref) async* {
 
     yield out;
 
-    await Future.delayed(fdlsUpdateFrequency);
+    await Future.delayed(hbUpdateFrequency);
   }
 }
 
@@ -54,7 +54,7 @@ class BacklightComponent extends ConsumerWidget {
         ...(backlights.valueOrNull ?? []).map((backlight) {
           return Component(
             primaryColor: Colors.yellow,
-            width: fdlsSmallComponentWidth,
+            width: hbSmallComponentWidth,
             child: BarSlider(
               onChanged: (newBrightness) async {
                 // TODO: use dbus instead

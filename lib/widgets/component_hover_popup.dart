@@ -1,5 +1,5 @@
-import 'package:fdls/constants.dart';
-import 'package:fdls/providers/popup.dart';
+import 'package:hoshi_bar/constants.dart';
+import 'package:hoshi_bar/providers/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -88,7 +88,7 @@ class _ComponentHoverPopupState extends ConsumerState<ComponentHoverPopup>
       child: FadeTransition(
         opacity: fade,
         child: Material(
-          color: fdlsBackgroundColor,
+          color: hbBackgroundColor,
           shadowColor: Colors.transparent,
           clipBehavior: Clip.antiAlias,
           shape: RoundedRectangleBorder(
@@ -105,7 +105,7 @@ class _ComponentHoverPopupState extends ConsumerState<ComponentHoverPopup>
                       Material(
                         animationDuration: const Duration(milliseconds: 0),
                         color: scrolled
-                            ? fdlsBackgroundColor.withOpacity(1)
+                            ? hbBackgroundColor.withOpacity(1)
                             : Colors.transparent,
                         elevation: scrolled ? 2 : 0,
                         child: Padding(

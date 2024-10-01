@@ -1,4 +1,4 @@
-import 'package:fdls/constants.dart';
+import 'package:hoshi_bar/constants.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:wayland_shell/wayland_shell.dart';
@@ -42,7 +42,7 @@ class _SimpleGraphState<T> extends State<SimpleGraph<T>> {
           minY: widget.minY,
           maxY: widget.maxY,
           minX: DateTime.now()
-                  .subtract(fdlsGraphPer100Px * (width / 100))
+                  .subtract(hbGraphPer100Px * (width / 100))
                   .millisecondsSinceEpoch /
               1000,
           maxX: DateTime.now().millisecondsSinceEpoch / 1000,

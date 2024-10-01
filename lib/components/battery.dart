@@ -1,7 +1,7 @@
-import 'package:fdls/constants.dart';
-import 'package:fdls/sysfs/power_supply.dart';
-import 'package:fdls/widgets/component.dart';
-import 'package:fdls/widgets/two_row.dart';
+import 'package:hoshi_bar/constants.dart';
+import 'package:hoshi_bar/sysfs/power_supply.dart';
+import 'package:hoshi_bar/widgets/component.dart';
+import 'package:hoshi_bar/widgets/two_row.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -32,7 +32,7 @@ Stream<List<Battery>> batteryStream(BatteryStreamRef ref) async* {
 
     yield out;
 
-    await Future.delayed(fdlsUpdateFrequency);
+    await Future.delayed(hbUpdateFrequency);
   }
 }
 
@@ -74,7 +74,7 @@ class BatteryComponent extends ConsumerWidget {
 
           return Component(
             primaryColor: color,
-            width: fdlsSmallComponentWidth,
+            width: hbSmallComponentWidth,
             child: TwoRow(
               top: Text("${(battery.capacity * 100).round()}%"),
               icon: Icon(icon),

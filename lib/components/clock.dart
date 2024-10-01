@@ -1,5 +1,5 @@
-import 'package:fdls/widgets/component.dart';
-import 'package:fdls/widgets/two_row.dart';
+import 'package:hoshi_bar/widgets/component.dart';
+import 'package:hoshi_bar/widgets/two_row.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';

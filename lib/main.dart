@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import 'package:fdls/components/audio.dart';
-import 'package:fdls/components/backlight.dart';
-import 'package:fdls/components/battery.dart';
-import 'package:fdls/components/bluetooth.dart';
-import 'package:fdls/components/clock.dart';
-import 'package:fdls/components/loadavg.dart';
-import 'package:fdls/components/network.dart';
-import 'package:fdls/components/temperature.dart';
-import 'package:fdls/components/workspaces.dart';
-import 'package:fdls/constants.dart';
-import 'package:fdls/providers/popup.dart';
-import 'package:fdls/providers/theme.dart';
+import 'package:hoshi_bar/components/audio.dart';
+import 'package:hoshi_bar/components/backlight.dart';
+import 'package:hoshi_bar/components/battery.dart';
+import 'package:hoshi_bar/components/bluetooth.dart';
+import 'package:hoshi_bar/components/clock.dart';
+import 'package:hoshi_bar/components/loadavg.dart';
+import 'package:hoshi_bar/components/network.dart';
+import 'package:hoshi_bar/components/temperature.dart';
+import 'package:hoshi_bar/components/workspaces.dart';
+import 'package:hoshi_bar/constants.dart';
+import 'package:hoshi_bar/providers/popup.dart';
+import 'package:hoshi_bar/providers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -68,7 +68,7 @@ class App extends ConsumerWidget {
               left: 0,
               bottom: 0,
               right: 0,
-              height: fdlsBarHeight,
+              height: hbBarHeight,
               child: GlobalRect(
                 onChange: (box) {
                   Future(() {
@@ -80,7 +80,7 @@ class App extends ConsumerWidget {
                   if (_barHeight != height) {
                     _barHeight = height;
                     print("setting exclusive zone height to $height");
-                    const MethodChannel("fdls").invokeMethod(
+                    const MethodChannel("hoshi_bar").invokeMethod(
                         "set_exclusive_zone", {"height": height.toInt()});
                   }
                 },

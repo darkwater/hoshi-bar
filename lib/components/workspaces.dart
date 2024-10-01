@@ -1,4 +1,4 @@
-import 'package:fdls/widgets/component.dart';
+import 'package:hoshi_bar/widgets/component.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hyprland_ipc/hyprland_ipc.dart';

@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:fdls/constants.dart';
-import 'package:fdls/widgets/component.dart';
-import 'package:fdls/widgets/slider.dart';
-import 'package:fdls/widgets/two_row.dart';
+import 'package:hoshi_bar/constants.dart';
+import 'package:hoshi_bar/widgets/component.dart';
+import 'package:hoshi_bar/widgets/slider.dart';
+import 'package:hoshi_bar/widgets/two_row.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -44,7 +44,7 @@ class AudioComponent extends ConsumerWidget {
 
     return Component(
       primaryColor: Colors.green,
-      width: fdlsSmallComponentWidth,
+      width: hbSmallComponentWidth,
       clipBehavior: Clip.none,
       child: volume != null
           ? BarSlider(

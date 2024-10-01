@@ -1,4 +1,4 @@
-import 'package:fdls/widgets/two_row.dart';
+import 'package:hoshi_bar/widgets/two_row.dart';
 import 'package:flutter/material.dart';
 
 class BarSlider extends StatefulWidget {

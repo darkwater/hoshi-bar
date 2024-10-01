@@ -1,10 +1,10 @@
-import 'package:fdls/constants.dart';
-import 'package:fdls/sysfs/hwmon.dart';
-import 'package:fdls/utils/history.dart';
-import 'package:fdls/widgets/component.dart';
-import 'package:fdls/widgets/component_hover_popup.dart';
-import 'package:fdls/widgets/simple_graph.dart';
-import 'package:fdls/widgets/two_row.dart';
+import 'package:hoshi_bar/constants.dart';
+import 'package:hoshi_bar/sysfs/hwmon.dart';
+import 'package:hoshi_bar/utils/history.dart';
+import 'package:hoshi_bar/widgets/component.dart';
+import 'package:hoshi_bar/widgets/component_hover_popup.dart';
+import 'package:hoshi_bar/widgets/simple_graph.dart';
+import 'package:hoshi_bar/widgets/two_row.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -33,7 +33,7 @@ Stream<History<(SysfsHwmon, String), double>> temperatureStream(
 
     yield history;
 
-    await Future.delayed(fdlsUpdateFrequency);
+    await Future.delayed(hbUpdateFrequency);
   }
 }
 
@@ -53,7 +53,7 @@ class TemperatureComponent extends ConsumerWidget {
 
     return Component.asyncValue(
       primaryColor: Colors.orange,
-      width: fdlsSmallComponentWidth,
+      width: hbSmallComponentWidth,
       value: devs,
       popup: const TemperatureHover(),
       builder: (context, history) {

@@ -1,5 +1,5 @@
-import 'package:fdls/constants.dart';
-import 'package:fdls/providers/popup.dart';
+import 'package:hoshi_bar/constants.dart';
+import 'package:hoshi_bar/providers/popup.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:wayland_shell/wayland_shell.dart';
@@ -56,7 +56,7 @@ class Component<T> extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: InputRegion(
           child: Material(
-            color: fdlsBackgroundColor,
+            color: hbBackgroundColor,
             shadowColor: Colors.transparent,
             clipBehavior: clipBehavior,
             shape: RoundedRectangleBorder(
@@ -114,7 +114,7 @@ class _InteractivityState extends ConsumerState<_Interactivity> {
 
                 ref.read(popupAnchorRectProvider.notifier).state = rect;
 
-                ref.read(popupSizeProvider.notifier).state = fdlsPopupSize;
+                ref.read(popupSizeProvider.notifier).state = hbPopupSize;
 
                 ref.read(popupThemeProvider.notifier).state = Theme.of(context);
               } else if (!ref.read(popupExpandedProvider)) {
@@ -143,7 +143,7 @@ class _InteractivityState extends ConsumerState<_Interactivity> {
                 ref.read(popupExpandedProvider.notifier).state = true;
               }
 
-              ref.read(popupSizeProvider.notifier).state = fdlsPopupFullSize;
+              ref.read(popupSizeProvider.notifier).state = hbPopupFullSize;
             },
       child: widget.child,
     );

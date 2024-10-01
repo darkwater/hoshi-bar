@@ -1,10 +1,10 @@
-import 'package:fdls/constants.dart';
-import 'package:fdls/sysfs/net.dart';
-import 'package:fdls/utils/history.dart';
-import 'package:fdls/widgets/component.dart';
-import 'package:fdls/widgets/component_hover_popup.dart';
-import 'package:fdls/widgets/simple_graph.dart';
-import 'package:fdls/widgets/two_row.dart';
+import 'package:hoshi_bar/constants.dart';
+import 'package:hoshi_bar/sysfs/net.dart';
+import 'package:hoshi_bar/utils/history.dart';
+import 'package:hoshi_bar/widgets/component.dart';
+import 'package:hoshi_bar/widgets/component_hover_popup.dart';
+import 'package:hoshi_bar/widgets/simple_graph.dart';
+import 'package:hoshi_bar/widgets/two_row.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -24,7 +24,7 @@ Stream<History<String, NetworkUsage>> networkUsageStream(
 ) async* {
   final history = History<String, NetworkUsage>();
 
-  DateTime last = DateTime.now().subtract(fdlsUpdateFrequency);
+  DateTime last = DateTime.now().subtract(hbUpdateFrequency);
 
   while (true) {
     final devices = await SysfsNet.list();
@@ -83,7 +83,7 @@ Stream<History<String, NetworkUsage>> networkUsageStream(
 
     last = DateTime.now();
 
-    await Future.delayed(fdlsUpdateFrequency);
+    await Future.delayed(hbUpdateFrequency);
   }
 }
 
@@ -124,7 +124,7 @@ class NetworkComponent extends ConsumerWidget {
 
     return Component.asyncValue(
       primaryColor: Colors.green,
-      width: fdlsMediumComponentWidth,
+      width: hbMediumComponentWidth,
       value: usage,
       popup: const NetworkHover(),
       builder: (context, history) {

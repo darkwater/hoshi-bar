@@ -36,7 +36,7 @@ static void my_application_activate(GApplication* application) {
     gtk_widget_set_visual(GTK_WIDGET(window), visual);
   }
 
-  gtk_window_set_title(window, "fdls");
+  gtk_window_set_title(window, "hoshi_bar");
 
   /* gtk_window_set_default_size(window, 1280, 50); */
   gtk_widget_show(GTK_WIDGET(window));
@@ -58,7 +58,7 @@ static void my_application_activate(GApplication* application) {
   FlEngine *engine = fl_view_get_engine(view);
   g_autoptr(FlStandardMethodCodec) codec = fl_standard_method_codec_new();
   g_autoptr(FlBinaryMessenger) messenger = fl_engine_get_binary_messenger(engine);
-  g_autoptr(FlMethodChannel) channel = fl_method_channel_new(messenger, "fdls", FL_METHOD_CODEC(codec));
+  g_autoptr(FlMethodChannel) channel = fl_method_channel_new(messenger, "hoshi_bar", FL_METHOD_CODEC(codec));
   fl_method_channel_set_method_call_handler(channel, method_call_cb, g_object_ref(view), g_object_unref);
 
   gtk_widget_grab_focus(GTK_WIDGET(view));
@@ -78,7 +78,7 @@ void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call, gpointe
   if (strcmp(method, "set_exclusive_zone") == 0) {
     int height = fl_value_get_int(fl_value_lookup_string(args, "height"));
 
-    gtk_layer_set_namespace(window, "fdls");
+    gtk_layer_set_namespace(window, "hoshi_bar");
     gtk_layer_set_exclusive_edge(window, GTK_LAYER_SHELL_EDGE_BOTTOM);
     gtk_layer_set_exclusive_zone(window, height);
 

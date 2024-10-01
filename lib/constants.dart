@@ -1,19 +1,19 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-const double fdlsSmallComponentWidth = 90;
-const double fdlsMediumComponentWidth = 150;
-const Color fdlsBackgroundColor = Color.fromRGBO(0x21, 0x27, 0x33, 0.8);
+const double hbSmallComponentWidth = 90;
+const double hbMediumComponentWidth = 150;
+const Color hbBackgroundColor = Color.fromRGBO(0x21, 0x27, 0x33, 0.8);
 
-const Size fdlsPopupSize = Size(240, 140);
-const Size fdlsPopupFullSize = Size(960, 600);
+const Size hbPopupSize = Size(240, 140);
+const Size hbPopupFullSize = Size(960, 600);
 
-const double fdlsBarHeight = 64;
+const double hbBarHeight = 64;
 
-const Duration fdlsUpdateFrequency =
+const Duration hbUpdateFrequency =
     kDebugMode ? Duration(seconds: 1) : Duration(seconds: 10);
-const Duration fdlsGraphPer100Px =
+const Duration hbGraphPer100Px =
     kDebugMode ? Duration(minutes: 1) : Duration(minutes: 5);
 
-final Duration fdlsDefaultKeepHistory =
-    fdlsGraphPer100Px * (fdlsPopupFullSize.width ~/ 100);
+final Duration hbDefaultKeepHistory =
+    hbGraphPer100Px * (hbPopupFullSize.width ~/ 100);
