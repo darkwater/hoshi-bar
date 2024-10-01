@@ -36,7 +36,7 @@ static void my_application_activate(GApplication* application) {
     gtk_widget_set_visual(GTK_WIDGET(window), visual);
   }
 
-  gtk_window_set_title(window, "hoshi_bar");
+  gtk_window_set_title(window, "hoshi-bar");
 
   /* gtk_window_set_default_size(window, 1280, 50); */
   gtk_widget_show(GTK_WIDGET(window));
@@ -78,7 +78,7 @@ void method_call_cb(FlMethodChannel *channel, FlMethodCall *method_call, gpointe
   if (strcmp(method, "set_exclusive_zone") == 0) {
     int height = fl_value_get_int(fl_value_lookup_string(args, "height"));
 
-    gtk_layer_set_namespace(window, "hoshi_bar");
+    gtk_layer_set_namespace(window, "hoshi-bar");
     gtk_layer_set_exclusive_edge(window, GTK_LAYER_SHELL_EDGE_BOTTOM);
     gtk_layer_set_exclusive_zone(window, height);
 

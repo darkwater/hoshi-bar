@@ -6,7 +6,7 @@ const double hbMediumComponentWidth = 150;
 const Color hbBackgroundColor = Color.fromRGBO(0x21, 0x27, 0x33, 0.8);
 
 const Size hbPopupSize = Size(240, 140);
-const Size hbPopupFullSize = Size(960, 600);
+const Size hbPopupFullSize = Size(480, 300);
 
 const double hbBarHeight = 64;
 

@@ -65,7 +65,6 @@ class _ComponentHoverPopupState extends ConsumerState<ComponentHoverPopup>
 
     scrollController = ScrollController();
     scrollController.addListener(() {
-      print('scrollController.addListener');
       if (scrollController.positions.isNotEmpty &&
           scrollController.offset > 0 &&
           !scrolled) {
@@ -128,7 +127,7 @@ class _ComponentHoverPopupState extends ConsumerState<ComponentHoverPopup>
                                     style:
                                         Theme.of(context).textTheme.titleMedium,
                                   ),
-                                  const SizedBox(height: 4),
+                                  // const SizedBox(height: 4),
                                   ...widget.underTitle,
                                 ],
                               ),

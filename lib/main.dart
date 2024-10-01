@@ -65,6 +65,9 @@ class App extends ConsumerWidget {
                 ),
               ),
             Positioned(
+              key: const ValueKey(
+                "bar that may or may not have a thing in front of it",
+              ),
               left: 0,
               bottom: 0,
               right: 0,

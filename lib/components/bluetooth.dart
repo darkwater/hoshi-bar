@@ -29,36 +29,50 @@ Stream<Bluetooth> bluetoothStream(BluetoothStreamRef ref) async* {
     try {
       final objects = await bluez.callGetManagedObjects();
 
+      final adapters = objects.entries
+          .where((e) => e.value.containsKey("org.bluez.Adapter1"))
+          .map((e) {
+        final properties = e.value["org.bluez.Adapter1"]!;
+
+        return BluetoothAdapter(
+          objectPath: e.key,
+          address: properties["Address"]!.asString(),
+          name: properties["Name"]!.asString(),
+          powered: properties["Powered"]!.asBoolean(),
+          discoverable: properties["Discoverable"]!.asBoolean(),
+          discovering: properties["Discovering"]!.asBoolean(),
+          pairable: properties["Pairable"]!.asBoolean(),
+        );
+      }).toList();
+
+      final devices = objects.entries
+          .where((e) => e.value.containsKey("org.bluez.Device1"))
+          .map((e) {
+        final properties = e.value["org.bluez.Device1"]!;
+
+        return BluetoothDevice(
+          objectPath: e.key,
+          address: properties["Address"]!.asString(),
+          name: properties["Name"]?.asString(),
+          icon: properties["Icon"]?.asString(),
+          paired: properties["Paired"]!.asBoolean(),
+          connected: properties["Connected"]!.asBoolean(),
+        );
+      }).toList();
+
+      devices.sort((a, b) {
+        if (a.connected && !b.connected) {
+          return -1;
+        } else if (!a.connected && b.connected) {
+          return 1;
+        } else {
+          return a.name?.compareTo(b.name ?? "") ?? 0;
+        }
+      });
+
       yield Bluetooth(
-        adapters: objects.entries
-            .where((e) => e.value.containsKey("org.bluez.Adapter1"))
-            .map((e) {
-          final properties = e.value["org.bluez.Adapter1"]!;
-
-          return BluetoothAdapter(
-            objectPath: e.key,
-            address: properties["Address"]!.asString(),
-            name: properties["Name"]!.asString(),
-            powered: properties["Powered"]!.asBoolean(),
-            discoverable: properties["Discoverable"]!.asBoolean(),
-            discovering: properties["Discovering"]!.asBoolean(),
-            pairable: properties["Pairable"]!.asBoolean(),
-          );
-        }).toList(),
-        devices: objects.entries
-            .where((e) => e.value.containsKey("org.bluez.Device1"))
-            .map((e) {
-          final properties = e.value["org.bluez.Device1"]!;
-
-          return BluetoothDevice(
-            objectPath: e.key,
-            address: properties["Address"]!.asString(),
-            name: properties["Name"]?.asString(),
-            icon: properties["Icon"]?.asString(),
-            paired: properties["Paired"]!.asBoolean(),
-            connected: properties["Connected"]!.asBoolean(),
-          );
-        }).toList(),
+        adapters: adapters,
+        devices: devices,
       );
     } catch (e) {
       print(e);
@@ -105,6 +119,8 @@ class BluetoothComponent extends ConsumerWidget {
   }
 }
 
+final _connectingDevicesProvider = StateProvider<List<String>>((ref) => []);
+
 class BluetoothHover extends ConsumerWidget {
   const BluetoothHover({super.key});
 
@@ -121,26 +137,61 @@ class BluetoothHover extends ConsumerWidget {
         itemBuilder: (context, index) {
           final device = bluetooth[index];
 
-          return ListTile(
-            leading: Icon(device.iconData),
-            title: Text(device.name ?? device.address),
-            trailing: IconButton(
-              icon: Icon(
-                device.connected ? Icons.link_off : Icons.link,
-              ),
-              onPressed: () async {
-                final dev = OrgBluezDevice1(
-                  ref.read(dbusSystemProvider),
-                  "org.bluez",
-                  device.objectPath,
-                );
+          final connecting = ref.watch(_connectingDevicesProvider
+              .select((s) => s.contains(device.address)));
 
-                if (device.connected) {
-                  await dev.callDisconnect();
-                } else {
-                  await dev.callConnect();
-                }
-              },
+          return AnimatedOpacity(
+            duration: const Duration(milliseconds: 200),
+            opacity: (device.connected || connecting) ? 1 : 0.5,
+            child: ListTile(
+              leading: Icon(device.iconData),
+              title: Text(device.name ?? device.address),
+              trailing: device.connected
+                  ? IconButton(
+                      icon: const Icon(
+                        Icons.link_off,
+                      ),
+                      onPressed: () async {
+                        final dev = OrgBluezDevice1(
+                          ref.read(dbusSystemProvider),
+                          "org.bluez",
+                          device.objectPath,
+                        );
+
+                        await dev.callDisconnect();
+                      },
+                    )
+                  : connecting
+                      ? const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(),
+                        )
+                      : null,
+              onTap: device.connected
+                  ? null
+                  : () async {
+                      final dev = OrgBluezDevice1(
+                        ref.read(dbusSystemProvider),
+                        "org.bluez",
+                        device.objectPath,
+                      );
+
+                      ref.read(_connectingDevicesProvider.notifier).state = [
+                        ...ref.read(_connectingDevicesProvider),
+                        device.address,
+                      ];
+
+                      try {
+                        await dev.callConnect();
+                      } finally {
+                        ref.read(_connectingDevicesProvider.notifier).state = [
+                          ...ref
+                              .read(_connectingDevicesProvider)
+                              .where((d) => d != device.address),
+                        ];
+                      }
+                    },
             ),
           );
         },
