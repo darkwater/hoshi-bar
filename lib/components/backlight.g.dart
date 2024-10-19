@@ -6,7 +6,7 @@ part of 'backlight.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$backlightStreamHash() => r'778e8a710ce48cd0f39b3c335f9d4d9ec99a9606';
+String _$backlightStreamHash() => r'c289bb5495e2521973e78546000099d0a247b71d';
 
 /// See also [backlightStream].
 @ProviderFor(backlightStream)

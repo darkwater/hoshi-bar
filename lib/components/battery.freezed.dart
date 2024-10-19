@@ -19,6 +19,7 @@ mixin _$Battery {
   String get id => throw _privateConstructorUsedError;
   double get capacity => throw _privateConstructorUsedError;
   SysfsPowerSupplyStatus get status => throw _privateConstructorUsedError;
+  bool get hid => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $BatteryCopyWith<Battery> get copyWith => throw _privateConstructorUsedError;
@@ -29,7 +30,8 @@ abstract class $BatteryCopyWith<$Res> {
   factory $BatteryCopyWith(Battery value, $Res Function(Battery) then) =
       _$BatteryCopyWithImpl<$Res, Battery>;
   @useResult
-  $Res call({String id, double capacity, SysfsPowerSupplyStatus status});
+  $Res call(
+      {String id, double capacity, SysfsPowerSupplyStatus status, bool hid});
 }
 
 /// @nodoc
@@ -48,6 +50,7 @@ class _$BatteryCopyWithImpl<$Res, $Val extends Battery>
     Object? id = null,
     Object? capacity = null,
     Object? status = null,
+    Object? hid = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -62,6 +65,10 @@ class _$BatteryCopyWithImpl<$Res, $Val extends Battery>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as SysfsPowerSupplyStatus,
+      hid: null == hid
+          ? _value.hid
+          : hid // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -73,7 +80,8 @@ abstract class _$$BatteryImplCopyWith<$Res> implements $BatteryCopyWith<$Res> {
       __$$BatteryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, double capacity, SysfsPowerSupplyStatus status});
+  $Res call(
+      {String id, double capacity, SysfsPowerSupplyStatus status, bool hid});
 }
 
 /// @nodoc
@@ -90,6 +98,7 @@ class __$$BatteryImplCopyWithImpl<$Res>
     Object? id = null,
     Object? capacity = null,
     Object? status = null,
+    Object? hid = null,
   }) {
     return _then(_$BatteryImpl(
       id: null == id
@@ -104,6 +113,10 @@ class __$$BatteryImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as SysfsPowerSupplyStatus,
+      hid: null == hid
+          ? _value.hid
+          : hid // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -112,7 +125,10 @@ class __$$BatteryImplCopyWithImpl<$Res>
 
 class _$BatteryImpl implements _Battery {
   const _$BatteryImpl(
-      {required this.id, required this.capacity, required this.status});
+      {required this.id,
+      required this.capacity,
+      required this.status,
+      required this.hid});
 
   @override
   final String id;
@@ -120,10 +136,12 @@ class _$BatteryImpl implements _Battery {
   final double capacity;
   @override
   final SysfsPowerSupplyStatus status;
+  @override
+  final bool hid;
 
   @override
   String toString() {
-    return 'Battery(id: $id, capacity: $capacity, status: $status)';
+    return 'Battery(id: $id, capacity: $capacity, status: $status, hid: $hid)';
   }
 
   @override
@@ -134,11 +152,12 @@ class _$BatteryImpl implements _Battery {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.capacity, capacity) ||
                 other.capacity == capacity) &&
-            (identical(other.status, status) || other.status == status));
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.hid, hid) || other.hid == hid));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, capacity, status);
+  int get hashCode => Object.hash(runtimeType, id, capacity, status, hid);
 
   @JsonKey(ignore: true)
   @override
@@ -151,7 +170,8 @@ abstract class _Battery implements Battery {
   const factory _Battery(
       {required final String id,
       required final double capacity,
-      required final SysfsPowerSupplyStatus status}) = _$BatteryImpl;
+      required final SysfsPowerSupplyStatus status,
+      required final bool hid}) = _$BatteryImpl;
 
   @override
   String get id;
@@ -159,6 +179,8 @@ abstract class _Battery implements Battery {
   double get capacity;
   @override
   SysfsPowerSupplyStatus get status;
+  @override
+  bool get hid;
   @override
   @JsonKey(ignore: true)
   _$$BatteryImplCopyWith<_$BatteryImpl> get copyWith =>

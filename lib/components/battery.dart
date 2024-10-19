@@ -14,8 +14,7 @@ part 'battery.freezed.dart';
 Stream<List<Battery>> batteryStream(BatteryStreamRef ref) async* {
   final batteries = <SysfsPowerSupply>[];
   for (final battery in await SysfsPowerSupply.list()) {
-    if (await battery.type == SysfsPowerSupplyType.battery &&
-        !battery.id.startsWith("hid")) {
+    if (await battery.type == SysfsPowerSupplyType.battery) {
       batteries.add(battery);
     }
   }
@@ -27,6 +26,7 @@ Stream<List<Battery>> batteryStream(BatteryStreamRef ref) async* {
         id: battery.id,
         capacity: await battery.capacity,
         status: await battery.status,
+        hid: battery.id.startsWith("hid"),
       ));
     }
 
@@ -42,6 +42,7 @@ class Battery with _$Battery {
     required String id,
     required double capacity,
     required SysfsPowerSupplyStatus status,
+    required bool hid,
   }) = _Battery;
 }
 
@@ -64,13 +65,16 @@ class BatteryComponent extends ConsumerWidget {
             _ => Colors.red,
           };
 
-          final icon = switch (battery.status) {
-            SysfsPowerSupplyStatus.charging => Icons.battery_charging_full,
-            SysfsPowerSupplyStatus.discharging => Icons.battery_full,
-            SysfsPowerSupplyStatus.notCharging => Icons.battery_unknown,
-            SysfsPowerSupplyStatus.full => Icons.battery_full,
-            _ => Icons.battery_unknown,
-          };
+          final icon = battery.hid
+              ? Icons.usb
+              : switch (battery.status) {
+                  SysfsPowerSupplyStatus.charging =>
+                    Icons.battery_charging_full,
+                  SysfsPowerSupplyStatus.discharging => Icons.battery_full,
+                  SysfsPowerSupplyStatus.notCharging => Icons.battery_unknown,
+                  SysfsPowerSupplyStatus.full => Icons.battery_full,
+                  _ => Icons.battery_unknown,
+                };
 
           return Component(
             primaryColor: color,
