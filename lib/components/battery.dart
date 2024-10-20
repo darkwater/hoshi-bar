@@ -12,14 +12,14 @@ part 'battery.freezed.dart';
 
 @riverpod
 Stream<List<Battery>> batteryStream(BatteryStreamRef ref) async* {
-  final batteries = <SysfsPowerSupply>[];
-  for (final battery in await SysfsPowerSupply.list()) {
-    if (await battery.type == SysfsPowerSupplyType.battery) {
-      batteries.add(battery);
-    }
-  }
-
   while (true) {
+    final batteries = <SysfsPowerSupply>[];
+    for (final battery in await SysfsPowerSupply.list()) {
+      if (await battery.type == SysfsPowerSupplyType.battery) {
+        batteries.add(battery);
+      }
+    }
+
     final out = <Battery>[];
     for (final battery in batteries) {
       out.add(Battery(
@@ -32,7 +32,7 @@ Stream<List<Battery>> batteryStream(BatteryStreamRef ref) async* {
 
     yield out;
 
-    await Future.delayed(hbUpdateFrequency);
+    await Future.delayed(hbSlowUpdateFrequency);
   }
 }
 

@@ -12,6 +12,8 @@ const double hbBarHeight = 64;
 
 const Duration hbUpdateFrequency =
     kDebugMode ? Duration(seconds: 1) : Duration(seconds: 10);
+const Duration hbSlowUpdateFrequency =
+    kDebugMode ? Duration(seconds: 1) : Duration(seconds: 60);
 const Duration hbGraphPer100Px =
     kDebugMode ? Duration(minutes: 1) : Duration(minutes: 5);
 
